@@ -1,5 +1,15 @@
 version: "2"
 services:
+  webapi:
+    container_name: webapi
+    restart: always
+    build: ./webapi
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./webapi:/usr/src/webapi
+    network_mode: host
+
   website:
     container_name: website
     restart: always

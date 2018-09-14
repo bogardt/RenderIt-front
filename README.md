@@ -19,3 +19,9 @@ docker-compose down
 ```bash
 sudo rm -rf mongo_data
 ```
+
+# Webapi
+Api is on port 4000
+
+# Website
+Webapp is on port 3000
