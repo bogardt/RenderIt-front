@@ -2,7 +2,6 @@ const passport = require("passport");
 const jwt = require('jsonwebtoken');
 const mongoose = require("mongoose");
 const User = mongoose.model('User');
-const bodyparser = require("body-parser");
 
 module.exports = {
 
