@@ -1,3 +1,4 @@
 
 mongo_data/
 website/node_modules/*
+webapi/node_modules/*
