@@ -6,6 +6,10 @@ import { Link } from 'react-router-dom';
 import Register from '../Components/Register';
 import Login from '../Components/Login';
 
+import 'font-awesome/css/font-awesome.min.css';
+import 'bootstrap/dist/css/bootstrap.min.css'; 
+import 'mdbreact/dist/css/mdb.css';
+
 import logo from '../logo.svg';
 import './App.css';
 
