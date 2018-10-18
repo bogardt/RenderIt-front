@@ -8,7 +8,7 @@ import Login from '../Components/Login';
 import NavbarFeatures from '../Components/NavbarFeatures';
 
 import 'font-awesome/css/font-awesome.min.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap-css-only/css/bootstrap.min.css';
 import 'mdbreact/dist/css/mdb.css';
 
 import logo from '../logo.svg';
