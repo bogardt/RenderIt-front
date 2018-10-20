@@ -3,11 +3,11 @@
 # Utils
 Un projet utilitaire a ete creer pour faciliter le lancement de la stack par un seul point de montage, pour vous evitez le chemin de correction classique veuillez directement telecharger le depot suivant via :
 ```
-git clone git@github.com:bogardt/RenderIt-back.git
+git clone git@github.com:bogardt/RenderIt-stack.git
 ```
 
 # Correction classique du projet :
-Pour que le projet communique avec le backend vous devez clonner le projet suivant via la commande :
+Pour que le projet communique avec le backend vous devez clonner le projet suivant (n'importe ou sur votre machine), via la commande :
 ```
 git clone git@github.com:bogardt/RenderIt-back.git
 ```
@@ -16,12 +16,17 @@ Et suivre le README du depot du backend pour lancer sa stack.
 
 Ce projet d'ecole tourne sur docker, suivre ce process pour lancer le serveur node :
 
-```
-docker build -t website --file Dockerfile
+```bash
+docker-compose build --no-cache
 ```
 
+```bash
+docker-compose up
 ```
-docker run le website websiteimg
+
+En tant que deamo
+```
+docker-compose up -d
 ```
 
 
