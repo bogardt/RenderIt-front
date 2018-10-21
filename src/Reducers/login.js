@@ -9,14 +9,19 @@ export function login(email, password) {
     dispatch(setLoginPending(true));
     dispatch(setLoginSuccess(false));
     dispatch(setLoginError(null));
-
-    _apiLogin(email, password, error => {
+    axios.post('http://localhost:4000/api/auth/login', {
+      email: email,
+      password: password
+    })
+    .then(function (response) {
+      console.log('success: ' + JSON.stringify(response))
       dispatch(setLoginPending(false));
-      if (!error) {
-        dispatch(setLoginSuccess(true));
-      } else {
-        dispatch(setLoginError(error));
-      }
+      dispatch(setLoginSuccess(true));
+    })
+    .catch(function (error) {
+      console.log('error: ' + error)
+      dispatch(setLoginPending(false));
+      dispatch(setLoginError(error));
     });
   }
 }
@@ -40,21 +45,6 @@ function setLoginError(loginError) {
     type: SET_LOGIN_ERROR,
     loginError
   }
-}
-
-function _apiLogin(email, password, callback) {
-  axios.post('http://localhost:4000/api/auth/login', {
-    email: email,
-    password: password
-  })
-  .then(function (response) {
-    console.log('success: ' + JSON.stringify(response))
-    return callback(response);
-  })
-  .catch(function (error) {
-    console.log('error: ' + error)
-    return callback(error);
-  });
 }
 
 export default function reducer(state = {

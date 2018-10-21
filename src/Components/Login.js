@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { login } from '../Redux/reducer.login';
+import { login } from '../Reducers/login';
 import './Login.css';
 
 class Login extends Component {
+
   constructor(props) {
     super(props);
     this.state = {};
@@ -14,30 +15,46 @@ class Login extends Component {
     let { email, password } = this.state;
     let { isLoginPending, isLoginSuccess, loginError } = this.props;
     return (
-      <div className="container ri-login-box-container">
-        <div className="row justify-content-md-center">
-          <div className="col-lg-6 col-md-6 col align-self-center">
+      <div className="container">
+        <div className="row">
+          <div className="col-sm-9 col-md-7 col-lg-5 mx-auto">
+            <div className="card card-signin my-5">
+              <div className="card-body">
+                <h5 className="card-title text-center">Sign In</h5>
+                <form className="form-signin" name="Login" onSubmit={this.onSubmit}>
+                  <div className="form-label-group">
+                    <input type="email" id="inputEmail" className="form-control" placeholder="Email address" required autoFocus onChange={e => this.setState({ email: e.target.value })} value={email} />
+                    <label htmlFor="inputEmail">Email address</label>
+                  </div>
 
-            <form name="loginForm" onSubmit={this.onSubmit}>
-              <p className="h4 text-center mb-4">Sign in</p>
-              <label htmlFor="defaultFormLoginEmailEx" className="grey-text">Your email</label>
-              <input type="email" id="defaultFormLoginEmailEx" className="form-control ri-login-input" onChange={e => this.setState({ email: e.target.value })} value={email} />
-              <br />
-              <label htmlFor="defaultFormLoginPasswordEx" className="grey-text">Your password</label>
-              <input type="password" id="defaultFormLoginPasswordEx" className="form-control ri-login-input" onChange={e => this.setState({ password: e.target.value })} value={password} />
-              <div className="text-center mt-4">
-                <button className="btn btn-dark" type="submit">Login</button>
+                  <div className="form-label-group">
+                    <input type="password" id="inputPassword" className="form-control" placeholder="Password" required onChange={e => this.setState({ password: e.target.value })} value={password} />
+                    <label htmlFor="inputPassword">Password</label>
+                  </div>
+
+                  <div className="custom-control custom-checkbox mb-3">
+                    <input type="checkbox" className="custom-control-input" id="customCheck1" />
+                    <label className="custom-control-label" htmlFor="customCheck1">Remember password</label>
+                  </div>
+
+                  <button className="btn btn-lg btn-primary btn-block text-uppercase" type="submit">Sign in</button>
+                  <button className="btn btn-lg btn-primary btn-block text-uppercase" to="/register">Sign up</button>
+                  <hr className="my-4" />
+
+                  <div className="message">
+                    {isLoginPending && <div>Please wait...</div>}
+                    {isLoginSuccess && <div>Success.</div>}
+                    {loginError && <div>{loginError.message}</div>}
+                  </div>
+
+                </form>
               </div>
-              <div className="message">
-                {isLoginPending && <div>Please wait...</div>}
-                {isLoginSuccess && <div>Success.</div>}
-                {loginError && <div>{loginError.message}</div>}
-              </div>
-            </form>
+            </div>
           </div>
         </div>
       </div>
-    );
+
+    )
   }
 
   onSubmit(e) {
@@ -49,11 +66,10 @@ class Login extends Component {
       password: ''
     });
   }
+
 }
 
 const mapStateToProps = (state) => {
-  console.log('state: ')
-  console.log(state)
   return {
     isLoginPending: state.isLoginPending,
     isLoginSuccess: state.isLoginSuccess,
@@ -68,3 +84,4 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Login);
+
