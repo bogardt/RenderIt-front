@@ -26,3 +26,11 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+.ri-bkgd-color {
+  background-color: #333;
+}
+
+.ri-font-color {
+  color: white;
+}
