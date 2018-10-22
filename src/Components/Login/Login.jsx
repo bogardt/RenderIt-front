@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { login } from '../Reducers/login';
+import { login } from '../../Reducers/login';
 import './Login.css';
 
 class Login extends Component {
-
   constructor(props) {
     super(props);
     this.state = {};
@@ -59,29 +58,26 @@ class Login extends Component {
 
   onSubmit(e) {
     e.preventDefault();
-    let { email, password } = this.state;
+    const { email, password } = this.state;
     this.props.login(email, password);
     this.setState({
       email: '',
       password: ''
     });
   }
-
 }
 
-const mapStateToProps = (state) => {
-  return {
-    isLoginPending: state.isLoginPending,
-    isLoginSuccess: state.isLoginSuccess,
-    loginError: state.loginError
-  };
-}
+const mapStateToProps = state => ({
+  isLoginPending: state.isLoginPending,
+  isLoginSuccess: state.isLoginSuccess,
+  loginError: state.loginError
+});
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    login: (email, password) => dispatch(login(email, password))
-  };
-}
+const mapDispatchToProps = dispatch => ({
+  login: (email, password) => dispatch(login(email, password))
+});
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
-
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Login);

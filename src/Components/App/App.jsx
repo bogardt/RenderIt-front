@@ -1,5 +1,6 @@
-import React from 'react'
-import { Link, browserHistory } from 'react-router'
+import React from 'react';
+import { Link } from 'react-router';
+// import { browserHistory } from 'react-router';
 import './App.css';
 
 export default function App({ children }) {
