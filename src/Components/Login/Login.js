@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { login } from '../../redux/actions/login';
 
 class Login extends Component {
@@ -7,18 +9,22 @@ class Login extends Component {
 
   password = '';
 
-  _handleChangeUsername = e => {
-    this.username = e.target;
+  static defaultProps = {
+    loginError: null
   };
 
-  _handleChangePassword = e => {
-    this.password = e.target;
+  handleChangeUsername = e => {
+    this.username = e.target.value;
   };
 
-  _handleSubmit = e => {
+  handleChangePassword = e => {
+    this.password = e.target.value;
+  };
+
+  handleSubmit = e => {
     e.preventDefault();
-    const { handleSubmit } = this.props;
-    handleSubmit(this.username, this.password);
+    const { signIn } = this.props;
+    signIn(this.username, this.password);
   };
 
   render() {
@@ -30,7 +36,7 @@ class Login extends Component {
             <div className="card card-signin my-5">
               <div className="card-body">
                 <h5 className="card-title text-center">Sign In</h5>
-                <form className="form-signin" name="Login" onSubmit={this._handleSubmit}>
+                <form className="form-signin" name="Login" onSubmit={this.handleSubmit}>
                   <div className="form-label-group">
                     <input
                       type="email"
@@ -38,8 +44,7 @@ class Login extends Component {
                       className="form-control"
                       placeholder="Email address"
                       required
-                      autoFocus
-                      onChange={this._handleChangeUsername}
+                      onChange={this.handleChangeUsername}
                     />
                     <label htmlFor="inputEmail">Email address</label>
                   </div>
@@ -51,7 +56,7 @@ class Login extends Component {
                       className="form-control"
                       placeholder="Password"
                       required
-                      onChange={this._handleChangePassword}
+                      onChange={this.handleChangePassword}
                     />
                     <label htmlFor="inputPassword">Password</label>
                   </div>
@@ -66,18 +71,19 @@ class Login extends Component {
                   <button className="btn btn-lg btn-primary btn-block text-uppercase" type="submit">
                     Sign in
                   </button>
-                  <button
+                  <Link
                     className="btn btn-lg btn-primary btn-block text-uppercase"
                     to="/register"
+                    type="button"
                   >
                     Sign up
-                  </button>
+                  </Link>
                   <hr className="my-4" />
 
                   <div className="message">
                     {isLoginPending && <div>Please wait...</div>}
                     {isLoginSuccess && <div>Success.</div>}
-                    {loginError && <div>{loginError.message}</div>}
+                    {loginError && <div>{loginError}</div>}
                   </div>
                 </form>
               </div>
@@ -89,6 +95,13 @@ class Login extends Component {
   }
 }
 
+Login.propTypes = {
+  signIn: PropTypes.func.isRequired,
+  isLoginPending: PropTypes.bool.isRequired,
+  isLoginSuccess: PropTypes.bool.isRequired,
+  loginError: PropTypes.string
+};
+
 const mapStateToProps = state => ({
   isLoginPending: state.LoginReducer.isLoginPending,
   isLoginSuccess: state.LoginReducer.isLoginSuccess,
@@ -96,7 +109,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  handleSubmit: (email, password) => dispatch(login(email, password))
+  signIn: (email, password) => dispatch(login(email, password))
 });
 
 export default connect(

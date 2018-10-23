@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 function setLoginPending(isLoginPending) {
   return {
     type: 'SET_LOGIN_PENDING',
@@ -19,29 +21,26 @@ function setLoginError(loginError) {
   };
 }
 
-function callLoginApi(email, password, callback) {
-  setTimeout(() => {
-    if (email === 'test@test.org' && password === 'pass') {
-      return callback(null);
-    }
-    return callback(new Error('Invalid email and password'));
-  }, 1000);
-}
-
 export function LoginAction(email, password) {
   return dispatch => {
     dispatch(setLoginPending(true));
     dispatch(setLoginSuccess(false));
     dispatch(setLoginError(null));
-
-    callLoginApi(email, password, error => {
-      dispatch(setLoginPending(false));
-      if (!error) {
+    axios
+      .post('/api/auth/login', {
+        email,
+        password
+      })
+      .then(response => {
+        console.log(response);
+        dispatch(setLoginPending(false));
         dispatch(setLoginSuccess(true));
-      } else {
-        dispatch(setLoginError(error));
-      }
-    });
+      })
+      .catch(error => {
+        console.log(error);
+        dispatch(setLoginPending(false));
+        dispatch(setLoginError('Unauthorized'));
+      });
   };
 }
 
