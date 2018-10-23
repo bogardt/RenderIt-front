@@ -14,10 +14,10 @@ function setLoginSuccess(isLoginSuccess) {
   };
 }
 
-function setLoginError(loginError) {
+function setLoginMsg(loginMsg) {
   return {
-    type: 'SET_LOGIN_ERROR',
-    loginError
+    type: 'SET_LOGIN_MSG',
+    loginMsg
   };
 }
 
@@ -25,7 +25,7 @@ export function LoginAction(email, password) {
   return dispatch => {
     dispatch(setLoginPending(true));
     dispatch(setLoginSuccess(false));
-    dispatch(setLoginError(null));
+    dispatch(setLoginMsg(null));
     axios
       .post('/api/auth/login', {
         email,
@@ -35,11 +35,13 @@ export function LoginAction(email, password) {
         console.log(response);
         dispatch(setLoginPending(false));
         dispatch(setLoginSuccess(true));
+
+        dispatch(setLoginMsg(response.data.bearer));
       })
       .catch(error => {
         console.log(error);
         dispatch(setLoginPending(false));
-        dispatch(setLoginError('Unauthorized'));
+        dispatch(setLoginMsg('Not found'));
       });
   };
 }

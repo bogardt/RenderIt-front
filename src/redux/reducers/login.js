@@ -2,7 +2,7 @@ export default function LoginReducer(
   state = {
     isLoginSuccess: false,
     isLoginPending: false,
-    loginError: null
+    loginMsg: null
   },
   action
 ) {
@@ -17,9 +17,9 @@ export default function LoginReducer(
         isLoginSuccess: action.isLoginSuccess
       });
 
-    case 'SET_LOGIN_ERROR':
+    case 'SET_LOGIN_MSG':
       return Object.assign({}, state, {
-        loginError: action.loginError
+        loginMsg: action.loginMsg
       });
 
     default:

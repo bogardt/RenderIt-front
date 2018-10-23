@@ -102,7 +102,6 @@ class Register extends Component {
                   </button>
 
                   <hr className="my-4" />
-
                 </form>
               </div>
             </div>

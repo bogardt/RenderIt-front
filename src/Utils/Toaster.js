@@ -11,6 +11,8 @@ export default {
         borderRadius: '8px',
         boxShadow: '2px 2px 20px 2px rgba(0,0,0,0.3)'
       },
+      autoClose: 2000,
+      hideProgressBar: true,
       progressClassName: css({
         background: '#333'
       })
@@ -25,6 +27,8 @@ export default {
         borderRadius: '8px',
         boxShadow: '2px 2px 20px 2px rgba(0,0,0,0.3)'
       },
+      autoClose: 2000,
+      hideProgressBar: true,
       progressClassName: css({
         background: '#333'
       })

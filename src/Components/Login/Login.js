@@ -3,15 +3,12 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { login } from '../../redux/actions/login';
+import toaster from '../../Utils/Toaster';
 
 class Login extends Component {
   email = '';
 
   password = '';
-
-  static defaultProps = {
-    loginError: null
-  };
 
   handleChangeEmail = e => {
     this.email = e.target.value;
@@ -28,7 +25,6 @@ class Login extends Component {
   };
 
   render() {
-    const { isLoginPending, isLoginSuccess, loginError } = this.props;
     return (
       <div className="container">
         <div className="row">
@@ -80,11 +76,6 @@ class Login extends Component {
                   </Link>
                   <hr className="my-4" />
 
-                  <div className="message">
-                    {isLoginPending && <div>Please wait...</div>}
-                    {isLoginSuccess && <div>Success.</div>}
-                    {loginError && <div>{loginError}</div>}
-                  </div>
                 </form>
               </div>
             </div>
@@ -96,17 +87,24 @@ class Login extends Component {
 }
 
 Login.propTypes = {
-  signIn: PropTypes.func.isRequired,
-  isLoginPending: PropTypes.bool.isRequired,
-  isLoginSuccess: PropTypes.bool.isRequired,
-  loginError: PropTypes.string
+  signIn: PropTypes.func.isRequired
 };
 
-const mapStateToProps = state => ({
-  isLoginPending: state.LoginReducer.isLoginPending,
-  isLoginSuccess: state.LoginReducer.isLoginSuccess,
-  loginError: state.LoginReducer.loginError
-});
+const mapStateToProps = state => {
+  if (state.LoginReducer.loginMsg !== null) {
+    if (state.LoginReducer.isLoginSuccess) {
+      toaster.success(state.LoginReducer.loginMsg);
+    } else {
+      toaster.error(state.LoginReducer.loginMsg);
+    }
+    state.LoginReducer.loginMsg = null;
+  }
+  return {
+    isLoginPending: state.LoginReducer.isLoginPending,
+    isLoginSuccess: state.LoginReducer.isLoginSuccess,
+    loginMsg: state.LoginReducer.loginMsg
+  };
+};
 
 const mapDispatchToProps = dispatch => ({
   signIn: (email, password) => dispatch(login(email, password))
