@@ -6,7 +6,7 @@ import { login } from '../../redux/actions/login';
 import toaster from '../../Utils/Toaster';
 
 class Login extends Component {
-  static defaultProp = {
+  static defaultProps = {
     isLoginSuccess: false
   };
 

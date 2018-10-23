@@ -4,6 +4,10 @@ body {
   font-family: sans-serif;
 }
 
+body, html {
+  height: 100%;
+}
+
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
@@ -18,8 +22,9 @@ input:-webkit-autofill:active {
 
 body {
   background: #9CECFB;
-  background: -webkit-linear-gradient(to right, #0052D4, #65C7F7, #9CECFB);
-  background: linear-gradient(to right, #0052D4, #65C7F7, #9CECFB);
+  background: #333;
+  /* background: -webkit-linear-gradient(to right, #0052D4, #65C7F7, #9CECFB);
+  background: linear-gradient(to right, #0052D4, #65C7F7, #9CECFB); */
 }
 
 .card-signin {

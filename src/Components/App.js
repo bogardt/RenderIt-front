@@ -1,8 +1,11 @@
 import React from 'react';
 import { Route, Link } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
+
 import Login from './Login/Login';
 import Register from './Register/Register';
+import Home from './Home/Home';
+import Messages from './Messages/Messages';
 
 const App = () => (
   <div>
@@ -35,6 +38,8 @@ const App = () => (
       <Route exact path="/" component={Login} />
       <Route path="/login" component={Login} />
       <Route path="/register" component={Register} />
+      <Route path="/home" component={Home} />
+      <Route path="/messages" component={Messages} />
     </div>
     <ToastContainer />
   </div>
