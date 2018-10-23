@@ -10,6 +10,7 @@ import App from './Components/App';
 
 import 'font-awesome/css/font-awesome.min.css';
 import 'bootstrap-css-only/css/bootstrap.min.css';
+import 'react-toastify/dist/ReactToastify.css';
 import './index.css';
 
 import registerServiceWorker from './registerServiceWorker';

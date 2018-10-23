@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { login } from '../../redux/actions/login';
 
 class Login extends Component {
-  username = '';
+  email = '';
 
   password = '';
 
@@ -13,8 +13,8 @@ class Login extends Component {
     loginError: null
   };
 
-  handleChangeUsername = e => {
-    this.username = e.target.value;
+  handleChangeEmail = e => {
+    this.email = e.target.value;
   };
 
   handleChangePassword = e => {
@@ -24,7 +24,7 @@ class Login extends Component {
   handleSubmit = e => {
     e.preventDefault();
     const { signIn } = this.props;
-    signIn(this.username, this.password);
+    signIn(this.email, this.password);
   };
 
   render() {
@@ -44,7 +44,7 @@ class Login extends Component {
                       className="form-control"
                       placeholder="Email address"
                       required
-                      onChange={this.handleChangeUsername}
+                      onChange={this.handleChangeEmail}
                     />
                     <label htmlFor="inputEmail">Email address</label>
                   </div>
