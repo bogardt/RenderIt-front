@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import { login } from '../../redux/actions/login';
 import toaster from '../../Utils/Toaster';
 
 class Login extends Component {
+  static defaultProp = {
+    isLoginSuccess: false
+  };
+
   email = '';
 
   password = '';
@@ -25,8 +29,10 @@ class Login extends Component {
   };
 
   render() {
+    const { isLoginSuccess } = this.props;
     return (
       <div className="container">
+        {isLoginSuccess && <Redirect to="/home" />}
         <div className="row">
           <div className="col-sm-9 col-md-7 col-lg-5 mx-auto">
             <div className="card card-signin my-5">
@@ -75,7 +81,6 @@ class Login extends Component {
                     Sign up
                   </Link>
                   <hr className="my-4" />
-
                 </form>
               </div>
             </div>
@@ -87,7 +92,8 @@ class Login extends Component {
 }
 
 Login.propTypes = {
-  signIn: PropTypes.func.isRequired
+  signIn: PropTypes.func.isRequired,
+  isLoginSuccess: PropTypes.bool
 };
 
 const mapStateToProps = state => {
