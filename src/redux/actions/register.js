@@ -1,18 +1,14 @@
 import axios from 'axios';
 
-function setRegisterPending(isRegisterPending) {
-  return {
-    type: 'SET_REGISTER_PENDING',
-    isRegisterPending
-  };
-}
+const setRegisterPending = isRegisterPending => ({
+  type: 'SET_REGISTER_PENDING',
+  isRegisterPending
+});
 
-function setRegisterMsg(registerMsg) {
-  return {
-    type: 'SET_REGISTER_MSG',
-    registerMsg
-  };
-}
+const setRegisterMsg = registerMsg => ({
+  type: 'SET_REGISTER_MSG',
+  registerMsg
+});
 
 export function RegisterAction(email, username, password) {
   return dispatch => {

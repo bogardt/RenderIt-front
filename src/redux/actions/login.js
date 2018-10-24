@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { setCookie } from 'redux-cookie';
 
 function setLoginPending(isLoginPending) {
   return {
@@ -7,14 +8,7 @@ function setLoginPending(isLoginPending) {
   };
 }
 
-function setLoginSuccess(isLoginSuccess) {
-  return {
-    type: 'SET_LOGIN_SUCCESS',
-    isLoginSuccess
-  };
-}
-
-function setLoginMsg(payload) {
+function setLoginPayload(payload) {
   return {
     type: 'SET_LOGIN_PAYLOAD',
     payload
@@ -30,13 +24,14 @@ export function LoginAction(email, password) {
         password
       })
       .then(response => {
-        dispatch(setLoginSuccess(true));
-        dispatch(setLoginMsg({ status: response.status, message: response.data.bearer }));
+        dispatch(setLoginPayload({ status: response.status, message: response.data.bearer }));
+        // setCookie('jwt', response.data.bearer);
       })
       .catch(error => {
         dispatch(
-          setLoginMsg({ status: error.response.status, message: error.response.data.message })
+          setLoginPayload({ status: error.response.status, message: error.response.data.message })
         );
+        // setCookie('jwt', null);
       });
   };
 }

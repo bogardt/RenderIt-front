@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Redirect, Link } from 'react-router-dom';
+import { getCookie } from 'redux-cookie';
 import { login } from '../../redux/actions/login';
 import toaster from '../../Utils/Toaster';
 
@@ -13,6 +14,11 @@ class Login extends Component {
   email = '';
 
   password = '';
+
+  constructor(props) {
+    super(props);
+    console.log(`get cookie jwt: ${JSON.stringify(getCookie('jwt'))}`);
+  }
 
   handleChangeEmail = e => {
     this.email = e.target.value;
@@ -97,8 +103,10 @@ Login.propTypes = {
 };
 
 const mapStateToProps = state => {
+  let success = false;
   if (!state.LoginReducer.isLoginPending && state.LoginReducer.payload !== null) {
-    if (state.LoginReducer.isLoginSuccess) {
+    if (state.LoginReducer.payload.status === 200) {
+      success = true;
       toaster.success(state.LoginReducer.payload.message);
     } else {
       toaster.error('Not found');
@@ -106,8 +114,8 @@ const mapStateToProps = state => {
   }
   return {
     isLoginPending: state.LoginReducer.isLoginPending,
-    isLoginSuccess: state.LoginReducer.isLoginSuccess,
-    loginMsg: state.LoginReducer.loginMsg
+    isLoginSuccess: success,
+    payload: state.LoginReducer.payload
   };
 };
 
