@@ -7,13 +7,6 @@ function setRegisterPending(isRegisterPending) {
   };
 }
 
-function setRegisterSuccess(isRegisterSuccess) {
-  return {
-    type: 'SET_REGISTER_SUCCESS',
-    isRegisterSuccess
-  };
-}
-
 function setRegisterMsg(registerMsg) {
   return {
     type: 'SET_REGISTER_MSG',
@@ -24,8 +17,6 @@ function setRegisterMsg(registerMsg) {
 export function RegisterAction(email, username, password) {
   return dispatch => {
     dispatch(setRegisterPending(true));
-    dispatch(setRegisterSuccess(false));
-    dispatch(setRegisterMsg(null));
     axios
       .post('/api/users', {
         email,
@@ -33,12 +24,9 @@ export function RegisterAction(email, username, password) {
         password
       })
       .then(response => {
-        dispatch(setRegisterPending(false));
-        dispatch(setRegisterSuccess(true));
         dispatch(setRegisterMsg(response.data.message));
       })
       .catch(error => {
-        dispatch(setRegisterPending(false));
         dispatch(setRegisterMsg(error.response.data.message));
       });
   };

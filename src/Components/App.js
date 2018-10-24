@@ -6,12 +6,14 @@ import Login from './Login/Login';
 import Register from './Register/Register';
 import Home from './Home/Home';
 import Messages from './Messages/Messages';
+import logo from '../img/logo.png';
 
 const App = () => (
   <div>
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
       <Link className="navbar-brand" to="/">
-        Render it project
+        <img className="ri-navbar-logo" alt="logo" src={logo} />
+        {/* Render it project */}
       </Link>
       <button
         className="navbar-toggler"

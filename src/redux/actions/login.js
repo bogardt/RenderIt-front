@@ -2,7 +2,7 @@ import axios from 'axios';
 
 function setLoginPending(isLoginPending) {
   return {
-    type: 'SET_LOGIN_PENDING',
+    type: 'SET_LOGGING_PENDING',
     isLoginPending
   };
 }
@@ -14,34 +14,29 @@ function setLoginSuccess(isLoginSuccess) {
   };
 }
 
-function setLoginMsg(loginMsg) {
+function setLoginMsg(payload) {
   return {
-    type: 'SET_LOGIN_MSG',
-    loginMsg
+    type: 'SET_LOGIN_PAYLOAD',
+    payload
   };
 }
 
 export function LoginAction(email, password) {
   return dispatch => {
     dispatch(setLoginPending(true));
-    dispatch(setLoginSuccess(false));
-    dispatch(setLoginMsg(null));
     axios
       .post('/api/auth/login', {
         email,
         password
       })
       .then(response => {
-        console.log(response);
-        dispatch(setLoginPending(false));
         dispatch(setLoginSuccess(true));
-
-        dispatch(setLoginMsg(response.data.bearer));
+        dispatch(setLoginMsg({ status: response.status, message: response.data.bearer }));
       })
       .catch(error => {
-        console.log(error);
-        dispatch(setLoginPending(false));
-        dispatch(setLoginMsg('Not found'));
+        dispatch(
+          setLoginMsg({ status: error.response.status, message: error.response.data.message })
+        );
       });
   };
 }

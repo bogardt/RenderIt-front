@@ -14,7 +14,7 @@ img {
     float: left;
     overflow: hidden;
     width: 40%;
-    height: 100%;
+    height: 93vh;
     border-right: 1px solid #c4c4c4;
 }
 
@@ -113,7 +113,7 @@ img {
 }
 
 .inbox_chat {
-    height: 550px;
+    height: 90%;
     overflow-y: scroll;
 }
 
@@ -188,6 +188,7 @@ img {
     font-size: 15px;
     min-height: 48px;
     width: 100%;
+    outline: none;
 }
 
 .type_msg {
@@ -223,4 +224,5 @@ img {
   padding: 0 !important;
   margin: 0 !important;
   max-width: 100% !important;
+  height: 90vh;
 }

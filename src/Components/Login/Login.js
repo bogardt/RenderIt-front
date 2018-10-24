@@ -97,13 +97,12 @@ Login.propTypes = {
 };
 
 const mapStateToProps = state => {
-  if (state.LoginReducer.loginMsg !== null) {
+  if (!state.LoginReducer.isLoginPending && state.LoginReducer.payload !== null) {
     if (state.LoginReducer.isLoginSuccess) {
-      toaster.success(state.LoginReducer.loginMsg);
+      toaster.success(state.LoginReducer.payload.message);
     } else {
-      toaster.error(state.LoginReducer.loginMsg);
+      toaster.error('Not found');
     }
-    state.LoginReducer.loginMsg = null;
   }
   return {
     isLoginPending: state.LoginReducer.isLoginPending,
