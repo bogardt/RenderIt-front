@@ -13,7 +13,6 @@ const App = () => (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
       <Link className="navbar-brand" to="/">
         <img className="ri-navbar-logo" alt="logo" src={logo} />
-        {/* Render it project */}
       </Link>
       <button
         className="navbar-toggler"

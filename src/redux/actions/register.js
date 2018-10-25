@@ -5,9 +5,9 @@ const setRegisterPending = isRegisterPending => ({
   isRegisterPending
 });
 
-const setRegisterMsg = registerMsg => ({
+const setRegisterPayload = payload => ({
   type: 'SET_REGISTER_MSG',
-  registerMsg
+  payload
 });
 
 export function RegisterAction(email, username, password) {
@@ -20,10 +20,20 @@ export function RegisterAction(email, username, password) {
         password
       })
       .then(response => {
-        dispatch(setRegisterMsg(response.data.message));
+        dispatch(
+          setRegisterPayload({
+            status: response.status,
+            message: response.data.message
+          })
+        );
       })
       .catch(error => {
-        dispatch(setRegisterMsg(error.response.data.message));
+        dispatch(
+          setRegisterPayload({
+            status: error.response.data.status,
+            message: error.response.data.message
+          })
+        );
       });
   };
 }

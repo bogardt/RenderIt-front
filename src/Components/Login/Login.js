@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Redirect, Link } from 'react-router-dom';
-import { getCookie } from 'redux-cookie';
 import { login } from '../../redux/actions/login';
 import toaster from '../../Utils/Toaster';
 
@@ -14,11 +13,6 @@ class Login extends Component {
   email = '';
 
   password = '';
-
-  constructor(props) {
-    super(props);
-    console.log(`get cookie jwt: ${JSON.stringify(getCookie('jwt'))}`);
-  }
 
   handleChangeEmail = e => {
     this.email = e.target.value;

@@ -117,17 +117,17 @@ Register.propTypes = {
 };
 
 const mapStateToProps = state => {
-  if (!state.RegisterReducer.isRegisterPending && state.RegisterReducer.registerMsg !== null) {
-    if (state.RegisterReducer.isRegisterSuccess) {
-      toaster.success(state.RegisterReducer.registerMsg);
+  if (!state.RegisterReducer.isRegisterPending && state.RegisterReducer.payload !== null) {
+    if (state.RegisterReducer.payload.status === 201) {
+      toaster.success(state.RegisterReducer.payload.message);
     } else {
-      toaster.error(state.RegisterReducer.registerMsg);
+      toaster.error(state.RegisterReducer.payload.message);
     }
   }
   return {
     isRegisterPending: state.RegisterReducer.isRegisterPending,
     isRegisterSuccess: state.RegisterReducer.isRegisterSuccess,
-    registerMsg: state.RegisterReducer.registerMsg
+    payload: state.RegisterReducer.payload
   };
 };
 

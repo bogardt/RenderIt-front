@@ -1,7 +1,6 @@
 const initialState = {
-  isRegisterSuccess: false,
   isRegisterPending: false,
-  registerMsg: null
+  payload: null
 };
 
 export default function RegisterReducer(state = initialState, action) {
@@ -12,18 +11,11 @@ export default function RegisterReducer(state = initialState, action) {
         isRegisterPending: true
       };
 
-    case 'SET_REGISTER_SUCCESS':
-      return {
-        ...state,
-        isRegisterSuccess: true
-      };
-
     case 'SET_REGISTER_MSG':
       return {
         ...state,
         isRegisterPending: false,
-        isRegisterSuccess: true,
-        registerMsg: action.registerMsg
+        payload: action.payload
       };
 
     default:
