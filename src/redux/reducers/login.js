@@ -3,7 +3,7 @@ const initialState = {
   payload: null
 };
 
-export default function LoginReducer(state = initialState, action) {
+const LoginReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'SET_LOGIN_PENDING':
       return {
@@ -21,4 +21,6 @@ export default function LoginReducer(state = initialState, action) {
     default:
       return state;
   }
-}
+};
+
+export default LoginReducer;

@@ -3,7 +3,7 @@ const initialState = {
   payload: null
 };
 
-export default function RegisterReducer(state = initialState, action) {
+const RegisterReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'SET_REGISTER_PENDING':
       return {
@@ -21,4 +21,6 @@ export default function RegisterReducer(state = initialState, action) {
     default:
       return state;
   }
-}
+};
+
+export default RegisterReducer;

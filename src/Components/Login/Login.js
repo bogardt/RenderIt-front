@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Redirect, Link } from 'react-router-dom';
-import { login } from '../../redux/actions/login';
+import { LoginAction, ResetAction } from '../../redux/actions/login';
 import toaster from '../../Utils/Toaster';
 
 class Login extends Component {
@@ -13,6 +13,11 @@ class Login extends Component {
   email = '';
 
   password = '';
+
+  constructor(props) {
+    super(props);
+    ResetAction();
+  }
 
   handleChangeEmail = e => {
     this.email = e.target.value;
@@ -30,9 +35,11 @@ class Login extends Component {
 
   render() {
     const { isLoginSuccess } = this.props;
+    if (isLoginSuccess) {
+      return <Redirect to="/home" />;
+    }
     return (
       <div className="container">
-        {isLoginSuccess && <Redirect to="/home" />}
         <div className="row">
           <div className="col-sm-9 col-md-7 col-lg-5 mx-auto">
             <div className="card card-signin my-5">
@@ -114,7 +121,7 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  signIn: (email, password) => dispatch(login(email, password))
+  signIn: (email, password) => dispatch(LoginAction(email, password))
 });
 
 export default connect(

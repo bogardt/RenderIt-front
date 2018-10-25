@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { register } from '../../redux/actions/register';
+import { RegisterAction } from '../../redux/actions/register';
 import toaster from '../../Utils/Toaster';
 
 class Register extends Component {
@@ -132,7 +132,7 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  signUp: (email, username, password) => dispatch(register(email, username, password))
+  signUp: (email, username, password) => dispatch(RegisterAction(email, username, password))
 });
 
 export default connect(

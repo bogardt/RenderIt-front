@@ -10,31 +10,32 @@ const setLoginPayload = payload => ({
   payload
 });
 
-export function LoginAction(email, password) {
-  return dispatch => {
-    dispatch(setLoginPending(true));
-    axios
-      .post('/api/auth/login', {
-        email,
-        password
-      })
-      .then(response => {
-        dispatch(
-          setLoginPayload({
-            status: response.status,
-            message: response.data.bearer
-          })
-        );
-      })
-      .catch(error => {
-        dispatch(
-          setLoginPayload({
-            status: error.response.status,
-            message: error.response.data.message
-          })
-        );
-      });
-  };
-}
+export const ResetAction = () => dispatch => {
+  dispatch(setLoginPending(false));
+  dispatch(setLoginPayload(null));
+};
 
-export const login = LoginAction;
+export const LoginAction = (email, password) => dispatch => {
+  dispatch(setLoginPending(true));
+  axios
+    .post('/api/auth/login', {
+      email,
+      password
+    })
+    .then(response => {
+      dispatch(
+        setLoginPayload({
+          status: response.status,
+          message: response.data.bearer
+        })
+      );
+    })
+    .catch(error => {
+      dispatch(
+        setLoginPayload({
+          status: error.response.status,
+          message: error.response.data.message
+        })
+      );
+    });
+};
