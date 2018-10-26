@@ -31,7 +31,6 @@ class Register extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-
     const { signUp } = this.props;
     if (this.password !== this.passwordConfirm) {
       toaster.error("Password doesn't match !");

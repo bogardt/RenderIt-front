@@ -20,7 +20,8 @@
     "redux": "^3.6.0",
     "redux-cookie": "^0.5.9",
     "redux-logger": "^3.0.6",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "socket.io-client": "^2.1.1"
   },
   "proxy": "http://localhost:4000",
   "scripts": {

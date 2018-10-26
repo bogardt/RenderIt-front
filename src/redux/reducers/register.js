@@ -11,7 +11,7 @@ const RegisterReducer = (state = initialState, action) => {
         isRegisterPending: true
       };
 
-    case 'SET_REGISTER_MSG':
+    case 'SET_REGISTER_PAYLOAD':
       return {
         ...state,
         isRegisterPending: false,

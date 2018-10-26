@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Redirect, Link } from 'react-router-dom';
-import { LoginAction, ResetAction } from '../../redux/actions/login';
+import { LoginAction, ResetLoginAction } from '../../redux/actions/login';
 import toaster from '../../Utils/Toaster';
 
 class Login extends Component {
@@ -16,7 +16,7 @@ class Login extends Component {
 
   constructor(props) {
     super(props);
-    ResetAction();
+    ResetLoginAction();
   }
 
   handleChangeEmail = e => {
@@ -34,8 +34,8 @@ class Login extends Component {
   };
 
   render() {
-    const { isLoginSuccess } = this.props;
-    if (isLoginSuccess) {
+    const { isLoginSuccess, isLogged } = this.props;
+    if (isLoginSuccess && !isLogged) {
       return <Redirect to="/home" />;
     }
     return (
@@ -100,7 +100,8 @@ class Login extends Component {
 
 Login.propTypes = {
   signIn: PropTypes.func.isRequired,
-  isLoginSuccess: PropTypes.bool
+  isLoginSuccess: PropTypes.bool,
+  isLogged: PropTypes.bool
 };
 
 const mapStateToProps = state => {
@@ -116,6 +117,7 @@ const mapStateToProps = state => {
   return {
     isLoginPending: state.LoginReducer.isLoginPending,
     isLoginSuccess: success,
+    isLogged: state.LoginReducer.isLogged,
     payload: state.LoginReducer.payload
   };
 };

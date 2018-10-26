@@ -1,5 +1,6 @@
 const initialState = {
   isLoginPending: false,
+  isLogged: false,
   payload: null
 };
 
@@ -9,6 +10,13 @@ const LoginReducer = (state = initialState, action) => {
       return {
         ...state,
         isLoginPending: action.isLoginPending
+      };
+
+    case 'SET_IS_LOGGED':
+      return {
+        ...state,
+        isLoginPending: false,
+        isLogged: action.isLogged
       };
 
     case 'SET_LOGIN_PAYLOAD':

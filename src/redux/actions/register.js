@@ -6,7 +6,7 @@ const setRegisterPending = isRegisterPending => ({
 });
 
 const setRegisterPayload = payload => ({
-  type: 'SET_REGISTER_MSG',
+  type: 'SET_REGISTER_PAYLOAD',
   payload
 });
 

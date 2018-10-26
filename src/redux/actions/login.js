@@ -10,7 +10,16 @@ const setLoginPayload = payload => ({
   payload
 });
 
-export const ResetAction = () => dispatch => {
+const setIsLogged = isLogged => ({
+  type: 'SET_LOGGED',
+  isLogged
+});
+
+export const SetLoggedState = isLogged => dispatch => {
+  dispatch(setIsLogged(isLogged));
+};
+
+export const ResetLoginAction = () => dispatch => {
   dispatch(setLoginPending(false));
   dispatch(setLoginPayload(null));
 };
