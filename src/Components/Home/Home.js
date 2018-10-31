@@ -19,8 +19,8 @@ class Home extends Component {
       // return <Redirect to="/login" />;
     }
     return (
-      <div className="container ri-search-bar">
-        <div className="row">
+      <div className="container">
+        <div className="row ri-search-bar">
           <div className="col-md-6">
             <div className="search-box">
               <form className="search-form">
@@ -29,6 +29,25 @@ class Home extends Component {
                   <i className="fa fa-search" aria-hidden="true" />
                 </button>
               </form>
+            </div>
+          </div>
+        </div>
+
+        <div className="row ri-friend-list">
+          <div className="col-md-12">
+            <div className="list-group" id="list-tab" role="tablist">
+              <a className="list-group-item list-group-item-action" href="#list-messages">
+                test1@test.org
+              </a>
+              <a className="list-group-item list-group-item-action" href="#list-messages">
+                test1@test.org
+              </a>
+              <a className="list-group-item list-group-item-action" href="#list-messages">
+                test1@test.org
+              </a>
+              <a className="list-group-item list-group-item-action" href="#list-messages">
+                test1@test.org
+              </a>
             </div>
           </div>
         </div>
