@@ -9,7 +9,6 @@ const setUserInfos = (email, username, jwt, allowed) => ({
 });
 
 export const GetMeAction = jwt => dispatch => {
-  console.log('GET ME ACTION')
   axios
     .get('/api/auth/me', {
       headers: {
@@ -17,24 +16,10 @@ export const GetMeAction = jwt => dispatch => {
       }
     })
     .then(response => {
-      dispatch(
-        setUserInfos({
-          email: response.data.email,
-          username: response.data.username,
-          jwt,
-          allowed: true
-        })
-      );
+      dispatch(setUserInfos(response.data.email, response.data.username, jwt, true));
     })
     .catch(error => {
-      dispatch(
-        setUserInfos({
-          email: error.response.data.email,
-          username: error.response.data.username,
-          jwt,
-          allowed: false
-        })
-      );
+      dispatch(setUserInfos(error.response.data.email, error.response.data.username, jwt, false));
     });
 };
 

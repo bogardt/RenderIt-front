@@ -1,4 +1,5 @@
 import axios from 'axios';
+import toaster from '../../Utils/Toaster';
 
 const setRegisterPending = isRegisterPending => ({
   type: 'SET_REGISTER_PENDING',
@@ -25,6 +26,11 @@ export const RegisterAction = (email, username, password) => dispatch => {
           message: response.data.message
         })
       );
+      if (response.status === 201) {
+        toaster.success(response.data.message);
+      } else {
+        toaster.error(response.data.message);
+      }
     })
     .catch(error => {
       dispatch(
@@ -33,6 +39,7 @@ export const RegisterAction = (email, username, password) => dispatch => {
           message: error.response.data.message
         })
       );
+      toaster.error(error.respoonse.data.message);
     });
 };
 

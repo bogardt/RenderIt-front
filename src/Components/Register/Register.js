@@ -115,20 +115,11 @@ Register.propTypes = {
   signUp: PropTypes.func.isRequired
 };
 
-const mapStateToProps = state => {
-  if (!state.RegisterReducer.isRegisterPending && state.RegisterReducer.payload !== null) {
-    if (state.RegisterReducer.payload.status === 201) {
-      toaster.success(state.RegisterReducer.payload.message);
-    } else {
-      toaster.error(state.RegisterReducer.payload.message);
-    }
-  }
-  return {
-    isRegisterPending: state.RegisterReducer.isRegisterPending,
-    isRegisterSuccess: state.RegisterReducer.isRegisterSuccess,
-    payload: state.RegisterReducer.payload
-  };
-};
+const mapStateToProps = state => ({
+  isRegisterPending: state.RegisterReducer.isRegisterPending,
+  isRegisterSuccess: state.RegisterReducer.payload.status === 201,
+  payload: state.RegisterReducer.payload
+});
 
 const mapDispatchToProps = dispatch => ({
   signUp: (email, username, password) => dispatch(RegisterAction(email, username, password))

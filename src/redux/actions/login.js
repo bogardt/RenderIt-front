@@ -1,4 +1,5 @@
 import axios from 'axios';
+import toaster from '../../Utils/Toaster';
 
 const setLoginPending = isLoginPending => ({
   type: 'SET_LOGGING_PENDING',
@@ -19,9 +20,14 @@ export const SetLoggedState = isLogged => dispatch => {
   dispatch(setIsLogged(isLogged));
 };
 
-export const ResetLoginAction = () => dispatch => {
+export const ResetLoginState = () => dispatch => {
   dispatch(setLoginPending(false));
-  dispatch(setLoginPayload(null));
+  dispatch(
+    setLoginPayload({
+      status: 0,
+      message: ''
+    })
+  );
 };
 
 export const LoginAction = (email, password) => dispatch => {
@@ -38,6 +44,11 @@ export const LoginAction = (email, password) => dispatch => {
           message: response.data.bearer
         })
       );
+      if (response.status === 200) {
+        toaster.success(response.data.bearer);
+      } else {
+        toaster.error(response.data);
+      }
     })
     .catch(error => {
       dispatch(
@@ -46,5 +57,6 @@ export const LoginAction = (email, password) => dispatch => {
           message: error.response.data.message
         })
       );
+      toaster.success(error.response.data.message);
     });
 };

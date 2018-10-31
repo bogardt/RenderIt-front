@@ -1,7 +1,10 @@
 const initialState = {
   isLoginPending: false,
   isLogged: false,
-  payload: null
+  payload: {
+    status: 0,
+    message: ''
+  }
 };
 
 const LoginReducer = (state = initialState, action) => {
@@ -22,6 +25,7 @@ const LoginReducer = (state = initialState, action) => {
     case 'SET_LOGIN_PAYLOAD':
       return {
         ...state,
+        isLogged: true,
         isLoginPending: false,
         payload: action.payload
       };

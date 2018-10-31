@@ -1,6 +1,9 @@
 const initialState = {
   isRegisterPending: false,
-  payload: null
+  payload: {
+    status: 0,
+    message: ''
+  }
 };
 
 const RegisterReducer = (state = initialState, action) => {

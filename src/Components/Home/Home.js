@@ -3,27 +3,34 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
 import { GetMeAction } from '../../redux/actions/global';
-import { ResetLogin } from '../../redux/actions/login';
+
+import './Home.css';
 
 class Home extends Component {
   constructor(props) {
     super(props);
-    const { jwt } = this.props;
-    GetMeAction(jwt);
+    const { jwt, getInfo } = this.props;
+    // getInfo(jwt);
   }
 
   render() {
-    const { userChecked, allowed, jwt } = this.props;
-    console.log(`userchecked: ${userChecked}`);
-    console.log(`allowed: ${allowed}`);
-    if (!userChecked && !allowed) {
-      return <div />;
+    const { userChecked, allowed } = this.props;
+    if (userChecked && !allowed) {
       // return <Redirect to="/login" />;
     }
     return (
-      <div className="container">
+      <div className="container ri-search-bar">
         <div className="row">
-          <h1 className="text-center" style="color:white;">WELCOME MY FRIEND</h1>
+          <div className="col-md-6">
+            <div className="search-box">
+              <form className="search-form">
+                <input className="form-control" placeholder="looking for someone ?" type="text" />
+                <button className="btn btn-link search-btn">
+                  <i className="fa fa-search" aria-hidden="true" />
+                </button>
+              </form>
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -31,27 +38,23 @@ class Home extends Component {
 }
 
 Home.propTypes = {
+  getInfo: PropTypes.func.isRequired,
   jwt: PropTypes.string.isRequired,
   allowed: PropTypes.bool.isRequired,
   userChecked: PropTypes.bool.isRequired
 };
 
-const mapStateToProps = state => {
-  return {
-    jwt:
-      state.LoginReducer.payload !== undefined &&
-      state.LoginReducer.payload !== null &&
-      state.LoginReducer.payload.bearer !== undefined
-        ? state.LoginReducer.payload.bearer
-        : '',
-    email: state.GlobalReducer.email,
-    username: state.GlobalReducer.username,
-    allowed: state.GlobalReducer.allowed,
-    userChecked: state.GlobalReducer.userChecked
-  };
-};
+const mapStateToProps = state => ({
+  jwt: state.LoginReducer.payload.message,
+  email: state.GlobalReducer.email,
+  username: state.GlobalReducer.username,
+  allowed: state.GlobalReducer.allowed,
+  userChecked: state.GlobalReducer.userChecked
+});
 
-const mapDispatchToProps = () => ({});
+const mapDispatchToProps = dispatch => ({
+  getInfo: jwt => dispatch(GetMeAction(jwt))
+});
 
 export default connect(
   mapStateToProps,

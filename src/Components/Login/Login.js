@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Redirect, Link } from 'react-router-dom';
-import { LoginAction, ResetLoginAction } from '../../redux/actions/login';
-import toaster from '../../Utils/Toaster';
+import { LoginAction, ResetLoginState } from '../../redux/actions/login';
 
 class Login extends Component {
   static defaultProps = {
-    isLoginSuccess: false
+    isLoginSuccess: false,
+    isLogged: false
   };
 
   email = '';
@@ -16,7 +16,8 @@ class Login extends Component {
 
   constructor(props) {
     super(props);
-    ResetLoginAction();
+    const { reset } = this.props;
+    reset();
   }
 
   handleChangeEmail = e => {
@@ -35,7 +36,9 @@ class Login extends Component {
 
   render() {
     const { isLoginSuccess, isLogged } = this.props;
-    if (isLoginSuccess && !isLogged) {
+    console.log(`login success : ${isLoginSuccess}`);
+    console.log(`logged : ${isLogged}`);
+    if (isLoginSuccess && isLogged) {
       return <Redirect to="/home" />;
     }
     return (
@@ -100,30 +103,21 @@ class Login extends Component {
 
 Login.propTypes = {
   signIn: PropTypes.func.isRequired,
+  reset: PropTypes.func.isRequired,
   isLoginSuccess: PropTypes.bool,
   isLogged: PropTypes.bool
 };
 
-const mapStateToProps = state => {
-  let success = false;
-  if (!state.LoginReducer.isLoginPending && state.LoginReducer.payload !== null) {
-    if (state.LoginReducer.payload.status === 200) {
-      success = true;
-      toaster.success(state.LoginReducer.payload.message);
-    } else {
-      toaster.error('Not found');
-    }
-  }
-  return {
-    isLoginPending: state.LoginReducer.isLoginPending,
-    isLoginSuccess: success,
-    isLogged: state.LoginReducer.isLogged,
-    payload: state.LoginReducer.payload
-  };
-};
+const mapStateToProps = state => ({
+  isLoginPending: state.LoginReducer.isLoginPending,
+  isLoginSuccess: state.LoginReducer.payload.status === 200,
+  isLogged: state.LoginReducer.isLogged,
+  payload: state.LoginReducer.payload
+});
 
 const mapDispatchToProps = dispatch => ({
-  signIn: (email, password) => dispatch(LoginAction(email, password))
+  signIn: (email, password) => dispatch(LoginAction(email, password)),
+  reset: () => dispatch(ResetLoginState())
 });
 
 export default connect(

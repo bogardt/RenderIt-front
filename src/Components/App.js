@@ -28,9 +28,9 @@ const App = () => (
       <div className="collapse navbar-collapse" id="navbarText">
         <ul className="navbar-nav mr-auto">
           <li className="nav-item active">
-            <Link className="nav-link" to="/login">
+            {/* <Link className="nav-link" to="/login">
               Login
-            </Link>
+            </Link> */}
           </li>
         </ul>
       </div>
