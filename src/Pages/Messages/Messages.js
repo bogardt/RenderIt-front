@@ -1,19 +1,24 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import Cookies from 'universal-cookie';
 import openSocket from 'socket.io-client';
 import DisplayRooms from '../../Components/DisplayRooms';
 import DisplayMessages from '../../Components/DisplayMessages';
+import { GetMeAction } from '../../redux/actions/global';
 import { ChangeSelectedRoom } from '../../redux/actions/room';
 import './Messages.css';
+
+const cookies = new Cookies();
 
 const socket = openSocket(window.location.origin);
 
 class Messages extends Component {
   constructor(props) {
     super(props);
-    const { jwt, getInfo } = this.props;
-    // getInfo(jwt);
+    const { getInfo } = this.props;
+    const jwt = cookies.get('jwt');
+    getInfo(jwt);
     this.jwt = jwt;
   }
 
@@ -65,6 +70,7 @@ class Messages extends Component {
 }
 
 Messages.propTypes = {
+  getInfo: PropTypes.func.isRequired,
   rooms: PropTypes.arrayOf(
     PropTypes.shape({
       messages: PropTypes.arrayOf(
@@ -87,6 +93,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
+  getInfo: jwt => dispatch(GetMeAction(jwt)),
   changeSelectedRoom: selectedRoom => dispatch(ChangeSelectedRoom(selectedRoom))
 });
 

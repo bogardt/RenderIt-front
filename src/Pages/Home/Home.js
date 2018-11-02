@@ -2,10 +2,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
+import Cookies from 'universal-cookie';
 import { GetMeAction, AddFriendAction, SearchUsersAction } from '../../redux/actions/global';
 import UserList from '../../Components/UserList';
 
 import './Home.css';
+
+const cookies = new Cookies();
 
 class Home extends Component {
   search = '';
@@ -14,7 +17,8 @@ class Home extends Component {
 
   constructor(props) {
     super(props);
-    const { jwt, getInfo } = this.props;
+    const { getInfo } = this.props;
+    const jwt = cookies.get('jwt');
     getInfo(jwt);
     this.jwt = jwt;
   }
@@ -70,7 +74,6 @@ Home.propTypes = {
   getInfo: PropTypes.func.isRequired,
   addFriend: PropTypes.func.isRequired,
   searchUsers: PropTypes.func.isRequired,
-  jwt: PropTypes.string.isRequired,
   allowed: PropTypes.bool.isRequired,
   userChecked: PropTypes.bool.isRequired,
   users: PropTypes.arrayOf(

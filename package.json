@@ -8,7 +8,6 @@
     "font-awesome": "^4.7.0",
     "glamor": "^2.20.40",
     "history": "^4.7.2",
-    "js-cookie": "^2.2.0",
     "prettier": "^1.14.3",
     "prop-types": "^15.6.2",
     "react": "^16.5.1",
@@ -18,10 +17,10 @@
     "react-scripts": "1.1.5",
     "react-toastify": "^4.4.0",
     "redux": "^3.6.0",
-    "redux-cookie": "^0.5.9",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.3.0",
-    "socket.io-client": "^2.1.1"
+    "socket.io-client": "^2.1.1",
+    "universal-cookie": "^3.0.4"
   },
   "proxy": "http://localhost:4000",
   "scripts": {

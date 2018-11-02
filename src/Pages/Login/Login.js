@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Redirect, Link } from 'react-router-dom';
+import Cookies from 'universal-cookie';
 import { LoginAction, ResetLoginState } from '../../redux/actions/login';
+
+const cookies = new Cookies();
 
 class Login extends Component {
   static defaultProps = {
@@ -35,10 +38,9 @@ class Login extends Component {
   };
 
   render() {
-    const { isLoginSuccess, isLogged } = this.props;
-    console.log(`login success : ${isLoginSuccess}`);
-    console.log(`logged : ${isLogged}`);
+    const { isLoginSuccess, isLogged, jwt } = this.props;
     if (isLoginSuccess && isLogged) {
+      cookies.set('jwt', jwt);
       return <Redirect to="/home" />;
     }
     return (
@@ -104,6 +106,7 @@ class Login extends Component {
 Login.propTypes = {
   signIn: PropTypes.func.isRequired,
   reset: PropTypes.func.isRequired,
+  jwt: PropTypes.string.isRequired,
   isLoginSuccess: PropTypes.bool,
   isLogged: PropTypes.bool
 };
@@ -112,7 +115,8 @@ const mapStateToProps = state => ({
   isLoginPending: state.LoginReducer.isLoginPending,
   isLoginSuccess: state.LoginReducer.payload.status === 200,
   isLogged: state.LoginReducer.isLogged,
-  payload: state.LoginReducer.payload
+  payload: state.LoginReducer.payload,
+  jwt: state.LoginReducer.payload.message
 });
 
 const mapDispatchToProps = dispatch => ({
