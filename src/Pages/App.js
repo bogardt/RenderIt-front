@@ -6,6 +6,7 @@ import Login from './Login/Login';
 import Register from './Register/Register';
 import Home from './Home/Home';
 import Messages from './Messages/Messages';
+import Logout from './Logout/Logout';
 import logo from '../img/logo.png';
 
 const App = () => (
@@ -28,6 +29,16 @@ const App = () => (
       <div className="collapse navbar-collapse" id="navbarText">
         <ul className="navbar-nav mr-auto">
           <li className="nav-item active">
+            <Link className="nav-link" to="/login">
+              Login
+            </Link>
+          </li>
+          <li className="nav-item active">
+            <Link className="nav-link" to="/register">
+              Register
+            </Link>
+          </li>
+          <li className="nav-item active">
             <Link className="nav-link" to="/home">
               Home
             </Link>
@@ -35,6 +46,11 @@ const App = () => (
           <li className="nav-item active">
             <Link className="nav-link" to="/messages">
               Messages
+            </Link>
+          </li>
+          <li className="nav-item active">
+            <Link className="nav-link" to="/logout">
+              Logout
             </Link>
           </li>
         </ul>
@@ -46,6 +62,7 @@ const App = () => (
       <Route path="/register" component={Register} />
       <Route path="/home" component={Home} />
       <Route path="/messages" component={Messages} />
+      <Route path="/logout" component={Logout} />
     </div>
     <ToastContainer />
   </div>

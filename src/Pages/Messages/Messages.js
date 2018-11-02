@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Cookies from 'universal-cookie';
+import { Redirect } from 'react-router-dom';
 // import openSocket from 'socket.io-client';
 import DisplayRooms from '../../Components/DisplayRooms';
 import DisplayMessages from '../../Components/DisplayMessages';
@@ -35,7 +36,10 @@ class Messages extends Component {
   };
 
   render() {
-    const { rooms, selectedRoom } = this.props;
+    const { rooms, selectedRoom, userChecked, allowed } = this.props;
+    if (userChecked && !allowed) {
+      return <Redirect to="/login" />;
+    }
     return (
       <div className="container ri-container-messages">
         <div className="messaging">
@@ -102,12 +106,16 @@ Messages.propTypes = {
       to: PropTypes.string.isRequired
     }).isRequired
   ).isRequired,
-  selectedRoom: PropTypes.string.isRequired
+  selectedRoom: PropTypes.string.isRequired,
+  allowed: PropTypes.bool.isRequired,
+  userChecked: PropTypes.bool.isRequired
 };
 
 const mapStateToProps = state => ({
   rooms: state.RoomReducer.rooms,
-  selectedRoom: state.RoomReducer.selectedRoom
+  selectedRoom: state.RoomReducer.selectedRoom,
+  allowed: state.GlobalReducer.allowed,
+  userChecked: state.GlobalReducer.userChecked
 });
 
 const mapDispatchToProps = dispatch => ({
