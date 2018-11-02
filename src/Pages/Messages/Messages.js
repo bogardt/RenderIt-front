@@ -1,46 +1,15 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import openSocket from 'socket.io-client';
 import DisplayRooms from '../../Components/DisplayRooms';
 import DisplayMessages from '../../Components/DisplayMessages';
+import { ChangeSelectedRoom } from '../../redux/actions/room';
 import './Messages.css';
 
 const socket = openSocket(window.location.origin);
 
 class Messages extends Component {
-  selectedRoom = 0;
-
-  rooms = [
-    {
-      date: '30/10/2018',
-      from: 'test@tes.fr',
-      to: 'test@test.fr',
-      messages: [
-        {
-          message: 'hihi',
-          date: '30/10/2018',
-          from: 'test@tes.fr'
-        },
-        {
-          message: 'hoho',
-          date: '30/10/2018',
-          from: 'test@test.fr'
-        }
-      ]
-    },
-    {
-      date: '30/10/2018',
-      from: 'test@tes.fr',
-      to: 'test@test.fr',
-      messages: [
-        {
-          message: 'hihi',
-          date: '30/10/2018',
-          from: 'test@te.fr'
-        }
-      ]
-    }
-  ];
-
   constructor(props) {
     super(props);
     const { jwt, getInfo } = this.props;
@@ -49,6 +18,7 @@ class Messages extends Component {
   }
 
   render() {
+    const { rooms, selectedRoom } = this.props;
     return (
       <div className="container ri-container-messages">
         <div className="messaging">
@@ -63,20 +33,20 @@ class Messages extends Component {
                     <input type="text" className="search-bar" placeholder="Search" />
                     <span className="input-group-addon">
                       <button type="button">
-                        <i className="fa fa-search" aria-hidden="true"></i>
+                        <i className="fa fa-search" aria-hidden="true" />
                       </button>
                     </span>
                   </div>
                 </div>
               </div>
-              <DisplayRooms rooms={this.rooms} />
+              <DisplayRooms rooms={rooms} />
             </div>
 
             <div className="mesgs">
               <DisplayMessages
-                messages={this.rooms[this.selectedRoom].messages}
-                fromer={this.rooms[this.selectedRoom].from}
-                toer={this.rooms[this.selectedRoom].to}
+                messages={rooms[selectedRoom].messages}
+                fromer={rooms[selectedRoom].from}
+                toer={rooms[selectedRoom].to}
               />
               <div className="type_msg">
                 <div className="input_msg_write">
@@ -94,4 +64,33 @@ class Messages extends Component {
   }
 }
 
-export default Messages;
+Messages.propTypes = {
+  rooms: PropTypes.arrayOf(
+    PropTypes.shape({
+      messages: PropTypes.arrayOf(
+        PropTypes.shape({
+          message: PropTypes.string.isRequired,
+          date: PropTypes.string.isRequired
+        })
+      ).isRequired,
+      date: PropTypes.string.isRequired,
+      from: PropTypes.string.isRequired,
+      to: PropTypes.string.isRequired
+    }).isRequired
+  ).isRequired,
+  selectedRoom: PropTypes.string.isRequired
+};
+
+const mapStateToProps = state => ({
+  rooms: state.RoomReducer.rooms,
+  selectedRoom: state.RoomReducer.selectedRoom
+});
+
+const mapDispatchToProps = dispatch => ({
+  changeSelectedRoom: selectedRoom => dispatch(ChangeSelectedRoom(selectedRoom))
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Messages);
