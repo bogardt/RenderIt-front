@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { ChangeSelectedRoom } from '../redux/actions/room';
+import { ChangeSelectedRoom } from '../redux/actions/rooms';
 import './DisplayRooms.css';
 
 class DisplayRooms extends Component {

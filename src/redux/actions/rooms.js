@@ -7,4 +7,6 @@ export const ChangeSelectedRoom = selectedRoom => dispatch => {
   dispatch(setSelectedRoom(selectedRoom));
 };
 
-export default ChangeSelectedRoom;
+export const SendMessage = (selectedRoom, message) => dispatch => {
+  console.log(`room [${selectedRoom}] send message: ${message}`);
+};
