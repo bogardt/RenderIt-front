@@ -11,7 +11,7 @@ import logo from '../img/logo.png';
 const App = () => (
   <div>
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
-      <Link className="navbar-brand" to="/">
+      <Link className="navbar-brand" to="/home">
         <img className="ri-navbar-logo" alt="logo" src={logo} />
       </Link>
       <button
@@ -28,9 +28,14 @@ const App = () => (
       <div className="collapse navbar-collapse" id="navbarText">
         <ul className="navbar-nav mr-auto">
           <li className="nav-item active">
-            {/* <Link className="nav-link" to="/login">
-              Login
-            </Link> */}
+            <Link className="nav-link" to="/home">
+              Home
+            </Link>
+          </li>
+          <li className="nav-item active">
+            <Link className="nav-link" to="/messages">
+              Messages
+            </Link>
           </li>
         </ul>
       </div>

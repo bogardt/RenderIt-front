@@ -3,7 +3,8 @@ const initialState = {
   username: '',
   jwt: '',
   allowed: false,
-  userChecked: false
+  userChecked: false,
+  users: []
 };
 
 const GlobalReducer = (state = initialState, action) => {
@@ -16,6 +17,12 @@ const GlobalReducer = (state = initialState, action) => {
         jwt: action.jwt,
         allowed: action.allowed,
         userChecked: true
+      };
+
+    case 'SET_USER_SEARCH':
+      return {
+        ...state,
+        users: action.users
       };
 
     default:

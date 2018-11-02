@@ -57,6 +57,6 @@ export const LoginAction = (email, password) => dispatch => {
           message: error.response.data.message
         })
       );
-      toaster.success(error.response.data.message);
+      toaster.error(error.response.data.message);
     });
 };

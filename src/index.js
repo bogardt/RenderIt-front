@@ -6,7 +6,7 @@ import createHistory from 'history/createBrowserHistory';
 import { Provider } from 'react-redux';
 import store from './redux/store';
 
-import App from './Components/App';
+import App from './Pages/App';
 
 import 'font-awesome/css/font-awesome.min.css';
 import 'bootstrap-css-only/css/bootstrap.min.css';
