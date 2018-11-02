@@ -14,6 +14,11 @@ const setUserSearch = users => ({
   users
 });
 
+const setFriendsSearch = friends => ({
+  type: 'SET_FRIENDS_SEARCH',
+  friends
+});
+
 export const GetMeAction = jwt => dispatch => {
   axios
     .get('/api/auth/me', {
@@ -52,6 +57,25 @@ export const AddFriendAction = (jwt, email) => () => {
     });
 };
 
+export const RemoveFriendAction = (jwt, friend) => () => {
+  axios
+    .delete(`/api/users/friends/${friend}`, {
+      headers: {
+        Authorization: `Bearer ${jwt}`
+      }
+    })
+    .then(response => {
+      if (response.status === 201) {
+        toaster.success(response.data.message);
+      } else {
+        toaster.error(response.data);
+      }
+    })
+    .catch(error => {
+      toaster.error(error.respoonse.data.message);
+    });
+};
+
 export const SearchUsersAction = (jwt, search) => dispatch => {
   axios
     .get(`/api/users/pattern/${search}`, {
@@ -64,5 +88,21 @@ export const SearchUsersAction = (jwt, search) => dispatch => {
     })
     .catch(error => {
       console.log(`ERROR on search users : ${JSON.stringify(error)}`);
+    });
+};
+
+export const SearchFriendsAction = (jwt, search) => dispatch => {
+  axios
+    .get(`/api/users/friends/pattern/${search}`, {
+      headers: {
+        Authorization: `Bearer ${jwt}`
+      }
+    })
+    .then(response => {
+      console.log(response);
+      dispatch(setFriendsSearch(response.data.friends));
+    })
+    .catch(error => {
+      console.log(`ERROR on search friends : ${JSON.stringify(error)}`);
     });
 };

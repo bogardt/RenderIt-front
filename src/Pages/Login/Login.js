@@ -8,11 +8,6 @@ import { LoginAction, ResetLoginState } from '../../redux/actions/login';
 const cookies = new Cookies();
 
 class Login extends Component {
-  static defaultProps = {
-    isLoginSuccess: false,
-    isLogged: false
-  };
-
   email = '';
 
   password = '';
@@ -38,8 +33,8 @@ class Login extends Component {
   };
 
   render() {
-    const { isLoginSuccess, isLogged, jwt } = this.props;
-    if (isLoginSuccess && isLogged) {
+    const { jwt } = this.props;
+    if (jwt && jwt.length > 0) {
       cookies.set('jwt', jwt);
       return <Redirect to="/home" />;
     }
@@ -106,9 +101,7 @@ class Login extends Component {
 Login.propTypes = {
   signIn: PropTypes.func.isRequired,
   reset: PropTypes.func.isRequired,
-  jwt: PropTypes.string.isRequired,
-  isLoginSuccess: PropTypes.bool,
-  isLogged: PropTypes.bool
+  jwt: PropTypes.string.isRequired
 };
 
 const mapStateToProps = state => ({

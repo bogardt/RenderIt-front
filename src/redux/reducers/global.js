@@ -4,7 +4,8 @@ const initialState = {
   jwt: '',
   allowed: false,
   userChecked: false,
-  users: []
+  users: [],
+  friends: []
 };
 
 const GlobalReducer = (state = initialState, action) => {
@@ -23,6 +24,12 @@ const GlobalReducer = (state = initialState, action) => {
       return {
         ...state,
         users: action.users
+      };
+
+    case 'SET_FRIENDS_SEARCH':
+      return {
+        ...state,
+        friends: action.friends
       };
 
     default:

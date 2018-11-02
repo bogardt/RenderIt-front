@@ -6,7 +6,8 @@ import { Redirect } from 'react-router-dom';
 // import openSocket from 'socket.io-client';
 import DisplayRooms from '../../Components/DisplayRooms';
 import DisplayMessages from '../../Components/DisplayMessages';
-import { GetMeAction } from '../../redux/actions/global';
+import FriendsList from '../../Components/FriendsList';
+import { GetMeAction, SearchFriendsAction, RemoveFriendAction } from '../../redux/actions/global';
 import { ChangeSelectedRoom, SendMessage } from '../../redux/actions/rooms';
 import './Messages.css';
 
@@ -16,6 +17,8 @@ const cookies = new Cookies();
 
 class Messages extends Component {
   input = '';
+
+  searchFriendsInput = '';
 
   constructor(props) {
     super(props);
@@ -35,8 +38,20 @@ class Messages extends Component {
     sendMessage(selectedRoom, this.input);
   };
 
+  handleChangeSearchFriends = e => {
+    this.searchFriendsInput = e.target.value;
+    const { searchFriends } = this.props;
+    searchFriends(this.jwt, this.searchFriendsInput);
+  };
+
+  handleRemoveFriend = (friend, e) => {
+    e.preventDefault();
+    const { removeFriend } = this.props;
+    removeFriend(this.jwt, friend);
+  };
+
   render() {
-    const { rooms, selectedRoom, userChecked, allowed } = this.props;
+    const { rooms, selectedRoom, userChecked, allowed, friends } = this.props;
     if (userChecked && !allowed) {
       return <Redirect to="/login" />;
     }
@@ -51,7 +66,12 @@ class Messages extends Component {
                 </div>
                 <div className="srch_bar">
                   <div className="stylish-input-group">
-                    <input type="text" className="search-bar" placeholder="Search" />
+                    <input
+                      type="text"
+                      className="search-bar"
+                      placeholder="Search"
+                      onChange={this.handleChangeSearchFriends}
+                    />
                     <span className="input-group-addon">
                       <button type="button">
                         <i className="fa fa-search" aria-hidden="true" />
@@ -59,6 +79,7 @@ class Messages extends Component {
                     </span>
                   </div>
                 </div>
+                <FriendsList friends={friends} deleteFriend={this.handleRemoveFriend} />
               </div>
               <DisplayRooms rooms={rooms} />
             </div>
@@ -93,6 +114,8 @@ class Messages extends Component {
 Messages.propTypes = {
   getInfo: PropTypes.func.isRequired,
   sendMessage: PropTypes.func.isRequired,
+  searchFriends: PropTypes.func.isRequired,
+  removeFriend: PropTypes.func.isRequired,
   rooms: PropTypes.arrayOf(
     PropTypes.shape({
       messages: PropTypes.arrayOf(
@@ -108,20 +131,24 @@ Messages.propTypes = {
   ).isRequired,
   selectedRoom: PropTypes.string.isRequired,
   allowed: PropTypes.bool.isRequired,
-  userChecked: PropTypes.bool.isRequired
+  userChecked: PropTypes.bool.isRequired,
+  friends: PropTypes.arrayOf(PropTypes.string).isRequired
 };
 
 const mapStateToProps = state => ({
   rooms: state.RoomReducer.rooms,
   selectedRoom: state.RoomReducer.selectedRoom,
   allowed: state.GlobalReducer.allowed,
-  userChecked: state.GlobalReducer.userChecked
+  userChecked: state.GlobalReducer.userChecked,
+  friends: state.GlobalReducer.friends
 });
 
 const mapDispatchToProps = dispatch => ({
   getInfo: jwt => dispatch(GetMeAction(jwt)),
   sendMessage: (selectedRoom, message) => dispatch(SendMessage(selectedRoom, message)),
-  changeSelectedRoom: selectedRoom => dispatch(ChangeSelectedRoom(selectedRoom))
+  changeSelectedRoom: selectedRoom => dispatch(ChangeSelectedRoom(selectedRoom)),
+  searchFriends: (jwt, searchFriends) => dispatch(SearchFriendsAction(jwt, searchFriends)),
+  removeFriend: (jwt, friend) => dispatch(RemoveFriendAction(jwt, friend))
 });
 
 export default connect(
