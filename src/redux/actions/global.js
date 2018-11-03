@@ -106,3 +106,27 @@ export const SearchFriendsAction = (jwt, search) => dispatch => {
       console.log(`ERROR on search friends : ${JSON.stringify(error)}`);
     });
 };
+
+export const AddRoomAction = (jwt, name) => dispatch => {
+  axios
+    .post(
+      '/api/room',
+      { name },
+      {
+        headers: {
+          Authorization: `Bearer ${jwt}`
+        }
+      }
+    )
+    .then(response => {
+      if (response.status === 201) {
+        toaster.success(response.data.message);
+      } else {
+        toaster.error(response.data);
+      }
+      // actualise room json
+    })
+    .catch(error => {
+      toaster.error(error.respoonse.data.message);
+    });
+};

@@ -7,7 +7,12 @@ import { Redirect } from 'react-router-dom';
 import DisplayRooms from '../../Components/DisplayRooms';
 import DisplayMessages from '../../Components/DisplayMessages';
 import FriendsList from '../../Components/FriendsList';
-import { GetMeAction, SearchFriendsAction, RemoveFriendAction } from '../../redux/actions/global';
+import {
+  GetMeAction,
+  SearchFriendsAction,
+  RemoveFriendAction,
+  AddRoomAction
+} from '../../redux/actions/global';
 import { ChangeSelectedRoom, SendMessage } from '../../redux/actions/rooms';
 import './Messages.css';
 
@@ -20,11 +25,14 @@ class Messages extends Component {
 
   searchFriendsInput = '';
 
+  roomName = '';
+
   constructor(props) {
     super(props);
     const { getInfo } = this.props;
     const jwt = cookies.get('jwt');
     getInfo(jwt);
+    console.log(`cookies jwt: ${jwt}`);
     this.jwt = jwt;
   }
 
@@ -50,6 +58,15 @@ class Messages extends Component {
     removeFriend(this.jwt, friend);
   };
 
+  handleChangeNameRoom = e => {
+    this.roomName = e.target.value;
+  };
+
+  handleAddRoom = () => {
+    const { addRoom } = this.props;
+    addRoom(this.jwt, this.roomName);
+  };
+
   render() {
     const { rooms, selectedRoom, userChecked, allowed, friends } = this.props;
     if (userChecked && !allowed) {
@@ -64,24 +81,22 @@ class Messages extends Component {
                 <div className="recent_heading">
                   <h4>Rooms</h4>
                 </div>
-                <div className="srch_bar">
-                  <div className="stylish-input-group">
-                    <input
-                      type="text"
-                      className="search-bar"
-                      placeholder="Search"
-                      onChange={this.handleChangeSearchFriends}
-                    />
-                    <span className="input-group-addon">
-                      <button type="button">
-                        <i className="fa fa-search" aria-hidden="true" />
-                      </button>
-                    </span>
-                  </div>
-                </div>
                 <FriendsList friends={friends} deleteFriend={this.handleRemoveFriend} />
               </div>
               <DisplayRooms rooms={rooms} />
+              <div className="ri-container-create-room-name">
+                <input
+                  type="text"
+                  className="search-bar ri-add-room-input"
+                  placeholder="New room"
+                  onChange={this.handleChangeNameRoom}
+                />
+                <span className="input-group-addon">
+                  <button type="button" onClick={this.handleAddRoom}>
+                    <i className="fa fa-plus ri-add-room-btn" aria-hidden="true" />
+                  </button>
+                </span>
+              </div>
             </div>
 
             <div className="mesgs">
@@ -116,6 +131,7 @@ Messages.propTypes = {
   sendMessage: PropTypes.func.isRequired,
   searchFriends: PropTypes.func.isRequired,
   removeFriend: PropTypes.func.isRequired,
+  addRoom: PropTypes.func.isRequired,
   rooms: PropTypes.arrayOf(
     PropTypes.shape({
       messages: PropTypes.arrayOf(
@@ -148,7 +164,8 @@ const mapDispatchToProps = dispatch => ({
   sendMessage: (selectedRoom, message) => dispatch(SendMessage(selectedRoom, message)),
   changeSelectedRoom: selectedRoom => dispatch(ChangeSelectedRoom(selectedRoom)),
   searchFriends: (jwt, searchFriends) => dispatch(SearchFriendsAction(jwt, searchFriends)),
-  removeFriend: (jwt, friend) => dispatch(RemoveFriendAction(jwt, friend))
+  removeFriend: (jwt, friend) => dispatch(RemoveFriendAction(jwt, friend)),
+  addRoom: (jwt, name) => dispatch(AddRoomAction(jwt, name))
 });
 
 export default connect(

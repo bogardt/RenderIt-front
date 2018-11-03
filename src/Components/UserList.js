@@ -9,7 +9,7 @@ const UserList = ({ users, addFriend }) => (
         {user.email}
         {!user.friend && (
           <i
-            className="fa fa-plus ri-add-friend-icon"
+            className="fa fa-plus ri-icon"
             aria-hidden="true"
             onClick={event => addFriend(user.email, event)}
           />

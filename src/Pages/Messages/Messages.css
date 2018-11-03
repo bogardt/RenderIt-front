@@ -226,3 +226,20 @@ img {
   max-width: 100% !important;
   height: 90vh;
 }
+
+.ri-container-new-room {
+  height: 50px;
+  margin-right: 20px;
+}
+
+.ri-container-create-room-name {
+  height: 400px;
+}
+
+.ri-add-room-input {
+  width: 90%;
+}
+
+.ri-add-room-btn {
+  cursor: pointer;
+}

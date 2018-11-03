@@ -8,7 +8,7 @@ const FriendsList = ({ friends, deleteFriend }) => (
       <li className="list-group-item d-flex justify-content-between align-items-center">
         {friend}
         <i
-          className="fa fa-trash ri-add-friend-icon"
+          className="fa fa-trash ri-icon"
           aria-hidden="true"
           onClick={event => deleteFriend(friend, event)}
         />
