@@ -18,6 +18,7 @@ class DisplayRooms extends Component {
           <div
             className={`chat_list ${selectedRoom === index ? 'active_chat' : ''}`}
             onClick={e => this.handleChangeSelectedRoom(index, e)}
+            key={index}
           >
             <div className="chat_people">
               <div className="chat_img">
@@ -43,15 +44,12 @@ class DisplayRooms extends Component {
 DisplayRooms.propTypes = {
   rooms: PropTypes.arrayOf(
     PropTypes.shape({
-      messages: PropTypes.arrayOf(
+      history: PropTypes.arrayOf(
         PropTypes.shape({
           message: PropTypes.string.isRequired,
           date: PropTypes.string.isRequired
         })
-      ).isRequired,
-      date: PropTypes.string.isRequired,
-      from: PropTypes.string.isRequired,
-      to: PropTypes.string.isRequired
+      ).isRequired
     }).isRequired
   ).isRequired,
   changeSelectedRoom: PropTypes.func.isRequired,

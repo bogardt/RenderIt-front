@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './DisplayMessages.css';
 
-const InOrOutComing = (message, email) => {
+const InOrOutComing = (message, email, index) => {
   if (message.from === email) {
     return (
-      <div className="outgoing_msg">
+      <div className="outgoing_msg" key={index}>
         <div className="sent_msg">
           <p>{message.message}</p>
           <span className="time_date">{message.date}</span>
@@ -14,7 +14,7 @@ const InOrOutComing = (message, email) => {
     );
   }
   return (
-    <div className="incoming_msg">
+    <div className="incoming_msg" key={index}>
       <div className="incoming_msg_img">
         <img src="https://ptetutorials.com/images/user-profile.png" alt="sunil" />
       </div>
@@ -29,7 +29,9 @@ const InOrOutComing = (message, email) => {
 };
 
 const DisplayMessages = ({ history, email }) => (
-  <div className="msg_history">{history.map(message => InOrOutComing(message, email))}</div>
+  <div className="msg_history">
+    {history.map((message, index) => InOrOutComing(message, email, index))}
+  </div>
 );
 
 DisplayMessages.propTypes = {

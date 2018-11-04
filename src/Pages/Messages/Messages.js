@@ -70,8 +70,14 @@ class Messages extends Component {
     addRoom(this.jwt, this.roomName);
   };
 
+  handleClickOnRemoveSearchFriends = () => {
+    const e = { target: { value: '' } };
+    this.handleChangeSearchFriends(e);
+  };
+
   render() {
     const { rooms, selectedRoom, userChecked, allowed, friends, email } = this.props;
+    console.log(friends);
     if (userChecked && !allowed) {
       return <Redirect to="/login" />;
     }
@@ -84,7 +90,6 @@ class Messages extends Component {
                 <div className="recent_heading">
                   <h4>Rooms</h4>
                 </div>
-                <FriendsList friends={friends} deleteFriend={this.handleRemoveFriend} />
               </div>
               <DisplayRooms rooms={rooms} />
               <div className="ri-container-create-room-name">
@@ -103,6 +108,24 @@ class Messages extends Component {
             </div>
 
             <div className="mesgs">
+              <div className="search-box">
+                <form className="search-form">
+                  <input
+                    className="form-control"
+                    placeholder="looking for someone ?"
+                    type="text"
+                    onChange={this.handleChangeSearchFriends}
+                  />
+                  <button className="btn btn-link search-btn">
+                    <i
+                      className="fa fa-close"
+                      aria-hidden="true"
+                      onClick={this.handleClickOnRemoveSearchFriends}
+                    />
+                  </button>
+                </form>
+              </div>
+              <FriendsList friends={friends} friendFunc={this.handleRemoveFriend} />
               {rooms.length > 0 && (
                 <DisplayMessages history={rooms[selectedRoom].history} email={email} />
               )}
@@ -136,15 +159,16 @@ Messages.propTypes = {
   addRoom: PropTypes.func.isRequired,
   rooms: PropTypes.arrayOf(
     PropTypes.shape({
-      messages: PropTypes.arrayOf(
+      history: PropTypes.arrayOf(
         PropTypes.shape({
           message: PropTypes.string.isRequired,
-          date: PropTypes.string.isRequired
+          date: PropTypes.string.isRequired,
+          from: PropTypes.string.isRequired
         })
       ).isRequired
     }).isRequired
   ).isRequired,
-  selectedRoom: PropTypes.string.isRequired,
+  selectedRoom: PropTypes.number.isRequired,
   allowed: PropTypes.bool.isRequired,
   userChecked: PropTypes.bool.isRequired,
   friends: PropTypes.arrayOf(PropTypes.string).isRequired,
