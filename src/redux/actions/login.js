@@ -46,7 +46,7 @@ export const LoginAction = (email, password) => dispatch => {
         })
       );
       if (response.status === 200) {
-        ServerConnectAction();
+        ServerConnectAction(email, response.data.bearer);
         toaster.success(response.data.bearer);
       } else {
         toaster.error(response.data);

@@ -158,11 +158,11 @@ export const SocketEventManagerAction = (email, bearer) => dispatch => {
   });
 };
 
-export const ServerConnectAction = () => dispatch => {
+export const ServerConnectAction = (email, bearer) => dispatch => {
   dispatch(setSocketConnectPending(true));
   this.context.socket = io('http://localhost:4000');
   if (this.context.socket) {
     dispatch(setIsSocketConnected(true));
-    SocketEventManagerAction();
+    SocketEventManagerAction(email, bearer);
   } else dispatch(setIsSocketConnected(false));
 };

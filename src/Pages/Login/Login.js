@@ -36,6 +36,7 @@ class Login extends Component {
     const { jwt } = this.props;
     if (jwt && jwt.length > 0) {
       cookies.set('jwt', jwt);
+      cookies.set('email', this.email);
       return <Redirect to="/home" />;
     }
     return (

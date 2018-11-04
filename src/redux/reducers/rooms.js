@@ -2,14 +2,11 @@ const initialState = {
   selectedRoom: 0,
   rooms: [
     {
-      date: '30/10/2018',
-      from: 'test@tes.fr',
-      to: 'test@test.fr',
-      messages: [
+      history: [
         {
           message: 'hihi',
           date: '30/10/2018',
-          from: 'test@tes.fr'
+          from: 'test@test.org'
         },
         {
           message: 'hoho',
@@ -19,10 +16,7 @@ const initialState = {
       ]
     },
     {
-      date: '30/10/2018',
-      from: 'test@tes.fr',
-      to: 'test@test.fr',
-      messages: [
+      history: [
         {
           message: 'hihi',
           date: '30/10/2018',
@@ -39,6 +33,12 @@ const RoomReducer = (state = initialState, action) => {
       return {
         ...state,
         selectedRoom: action.selectedRoom
+      };
+
+    case 'SET_USER_ROOMS':
+      return {
+        ...state,
+        rooms: action.rooms
       };
 
     default:

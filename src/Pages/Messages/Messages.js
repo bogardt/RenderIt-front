@@ -7,15 +7,10 @@ import { Redirect } from 'react-router-dom';
 import DisplayRooms from '../../Components/DisplayRooms';
 import DisplayMessages from '../../Components/DisplayMessages';
 import FriendsList from '../../Components/FriendsList';
-import {
-  GetMeAction,
-  SearchFriendsAction,
-  RemoveFriendAction,
-  AddRoomAction
-} from '../../redux/actions/global';
-import { ChangeSelectedRoom, SendMessage } from '../../redux/actions/rooms';
+import { GetMeAction, SearchFriendsAction, RemoveFriendAction } from '../../redux/actions/global';
+import { ChangeSelectedRoom, SendMessage, GetRooms } from '../../redux/actions/rooms';
+import { StopTypingAction, TypingAction, CreateRoomAction } from '../../redux/actions/chat';
 import './Messages.css';
-import { StopTypingAction, TypingAction } from '../../redux/actions/chat';
 
 const cookies = new Cookies();
 
@@ -30,9 +25,10 @@ class Messages extends Component {
 
   constructor(props) {
     super(props);
-    const { getInfo } = this.props;
+    const { getInfo, getRooms } = this.props;
     const jwt = cookies.get('jwt');
     getInfo(jwt);
+    getRooms(jwt);
     console.log(`cookies jwt: ${jwt}`);
     this.jwt = jwt;
   }
@@ -75,7 +71,7 @@ class Messages extends Component {
   };
 
   render() {
-    const { rooms, selectedRoom, userChecked, allowed, friends } = this.props;
+    const { rooms, selectedRoom, userChecked, allowed, friends, email } = this.props;
     if (userChecked && !allowed) {
       return <Redirect to="/login" />;
     }
@@ -107,11 +103,7 @@ class Messages extends Component {
             </div>
 
             <div className="mesgs">
-              <DisplayMessages
-                messages={rooms[selectedRoom].messages}
-                fromer={rooms[selectedRoom].from}
-                toer={rooms[selectedRoom].to}
-              />
+              <DisplayMessages history={rooms[selectedRoom].history} email={email} />
               <div className="type_msg">
                 <div className="input_msg_write">
                   <input
@@ -138,6 +130,7 @@ Messages.propTypes = {
   sendMessage: PropTypes.func.isRequired,
   searchFriends: PropTypes.func.isRequired,
   removeFriend: PropTypes.func.isRequired,
+  getRooms: PropTypes.func.isRequired,
   addRoom: PropTypes.func.isRequired,
   rooms: PropTypes.arrayOf(
     PropTypes.shape({
@@ -146,16 +139,14 @@ Messages.propTypes = {
           message: PropTypes.string.isRequired,
           date: PropTypes.string.isRequired
         })
-      ).isRequired,
-      date: PropTypes.string.isRequired,
-      from: PropTypes.string.isRequired,
-      to: PropTypes.string.isRequired
+      ).isRequired
     }).isRequired
   ).isRequired,
   selectedRoom: PropTypes.string.isRequired,
   allowed: PropTypes.bool.isRequired,
   userChecked: PropTypes.bool.isRequired,
-  friends: PropTypes.arrayOf(PropTypes.string).isRequired
+  friends: PropTypes.arrayOf(PropTypes.string).isRequired,
+  email: PropTypes.string.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -163,16 +154,18 @@ const mapStateToProps = state => ({
   selectedRoom: state.RoomReducer.selectedRoom,
   allowed: state.GlobalReducer.allowed,
   userChecked: state.GlobalReducer.userChecked,
-  friends: state.GlobalReducer.friends
+  friends: state.GlobalReducer.friends,
+  email: state.GlobalReducer.email
 });
 
 const mapDispatchToProps = dispatch => ({
   getInfo: jwt => dispatch(GetMeAction(jwt)),
+  getRooms: jwt => dispatch(GetRooms(jwt)),
   sendMessage: (selectedRoom, message) => dispatch(SendMessage(selectedRoom, message)),
   changeSelectedRoom: selectedRoom => dispatch(ChangeSelectedRoom(selectedRoom)),
   searchFriends: (jwt, searchFriends) => dispatch(SearchFriendsAction(jwt, searchFriends)),
   removeFriend: (jwt, friend) => dispatch(RemoveFriendAction(jwt, friend)),
-  addRoom: (jwt, name) => dispatch(AddRoomAction(jwt, name)),
+  addRoom: (jwt, name) => dispatch(CreateRoomAction(name)),
   TypingAction: selectedRoom => dispatch(TypingAction(selectedRoom)),
   StopTypingAction: selectedRoom => dispatch(StopTypingAction(selectedRoom))
 });

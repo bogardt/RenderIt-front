@@ -25,12 +25,12 @@ class DisplayRooms extends Component {
               </div>
               <div className="chat_ib">
                 <h5>
-                  {room.from}
+                  {room.name}
                   <span className="chat_date">
-                    {room.messages.length > 0 && room.messages[0].date}
+                    {room.history.length > 0 && room.history[0].length > 0 && room.history[0].date}
                   </span>
                 </h5>
-                <p>{room.messages.length > 0 && room.messages[0].message}</p>
+                <p>{room.history.length > 0 && room.history[0].message}</p>
               </div>
             </div>
           </div>
