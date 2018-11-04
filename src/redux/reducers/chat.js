@@ -113,3 +113,5 @@ const ChatReducer = (state = initialState, action) => {
       return state;
   }
 };
+
+export default ChatReducer;
