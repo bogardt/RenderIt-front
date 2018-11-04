@@ -1,5 +1,6 @@
 import io from 'socket.io-client';
 import toaster from '../../Utils/Toaster';
+import SocketSingleton from '../../Utils/SocketSingleton';
 
 const setSocketConnectPending = isSocketConnectPending => ({
   type: 'SET_SOCKET_CONNECT_PENDING',
@@ -75,63 +76,69 @@ const setStopTypingEventSent = () => ({
 });
 
 export const TypingAction = roomId => dispatch => {
-  this.context.socket.emit('typing', roomId);
+  const socket = SocketSingleton.getSocket();
+  socket.emit('typing', roomId);
   dispatch(setTypingEventSent);
 };
 
 export const StopTypingAction = roomId => dispatch => {
-  this.context.socket.emit('stop-typing', roomId);
+  const socket = SocketSingleton.getSocket();
+  socket.emit('stop-typing', roomId);
   dispatch(setStopTypingEventSent);
 };
 
 export const SendMessageAction = (message, roomId) => dispatch => {
-  this.context.socket.emit('message', message, roomId);
+  const socket = SocketSingleton.getSocket();
+  socket.emit('message', message, roomId);
   dispatch(setMessageEventSent());
 };
 
 export const JoinRoomAction = roomId => dispatch => {
-  this.context.socket.emit('join-room', roomId);
+  const socket = SocketSingleton.getSocket();
+  socket.emit('join-room', roomId);
   dispatch(setJoinRoomEventSent());
 };
 
 export const CreateRoomAction = roomName => dispatch => {
-  this.context.socket.emit('create-room', roomName);
+  const socket = SocketSingleton.getSocket();
+  socket.emit('create-room', roomName);
   dispatch(setCreateRoomEventSent());
 };
 
 export const LeaveRoomAction = roomId => dispatch => {
-  this.context.socket.emit('leave-room', roomId);
+  const socket = SocketSingleton.getSocket();
+  socket.emit('leave-room', roomId);
   dispatch(setLeaveRoomEventSent());
 };
 
-export const SocketEventManagerAction = (email, bearer) => dispatch => {
-  this.context.socket.on('authorization', message => {
+export const SocketEventManagerAction = (email, bearer, socket) => dispatch => {
+  socket.on('authorization', message => {
     dispatch(setAuthorizationEventReceived(message));
-    this.context.socket.emit('authorization', email, bearer);
+    socket.emit('authorization', email, bearer);
     dispatch(setAuthorizationEventSent());
   });
 
-  this.context.socket.on('success', message => {
+  socket.on('success', message => {
     dispatch(setSuccessEventReceived());
     toaster.success(message);
   });
 
-  this.context.socket.on('error', message => {
+  socket.on('error', message => {
     dispatch(setErrorEventReceived());
     toaster.error(message);
   });
 
-  this.context.socket.on('join-room', room => {
+  socket.on('join-room', room => {
     dispatch(setJoinRoomEventReceived());
     // objet room avec id history user etc..
   });
 
-  this.context.socket.on('create-room', room => {
+  socket.on('create-room', room => {
     dispatch(setCreateRoomEventReceived());
     // objet room avec id history user etc..
   });
 
-  this.context.socket.on('leave-room', message => {
+  socket.on('leave-room', message => {
     dispatch(setLeaveRoomEventReceived());
     if (message.includes('Success')) {
       dispatch(setSuccessEventReceived());
@@ -142,17 +149,17 @@ export const SocketEventManagerAction = (email, bearer) => dispatch => {
     }
   });
 
-  this.context.socket.on('message', history => {
+  socket.on('message', history => {
     dispatch(setMessageEventReceived());
     // tableau de message, history complet de la room
   });
 
-  this.context.socket.on('typing', room => {
+  socket.on('typing', room => {
     dispatch(setTypingEventReceived());
     // objet room avec id history user etc..
   });
 
-  this.context.socket.on('stop-typing', room => {
+  socket.on('stop-typing', room => {
     dispatch(setStopTypingEventReceived());
     // objet room avec id history user etc..
   });
@@ -160,9 +167,10 @@ export const SocketEventManagerAction = (email, bearer) => dispatch => {
 
 export const ServerConnectAction = (email, bearer) => dispatch => {
   dispatch(setSocketConnectPending(true));
-  this.context.socket = io('http://localhost:4000');
+  const socket = io('http://localhost:4000');
+  SocketSingleton.setSocket(socket);
   if (this.context.socket) {
     dispatch(setIsSocketConnected(true));
-    SocketEventManagerAction(email, bearer);
+    SocketEventManagerAction(email, bearer, socket);
   } else dispatch(setIsSocketConnected(false));
 };
