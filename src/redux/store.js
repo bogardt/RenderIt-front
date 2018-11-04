@@ -4,13 +4,13 @@ import { createStore, combineReducers, applyMiddleware } from 'redux';
 import LoginReducer from './reducers/login';
 import RegisterReducer from './reducers/register';
 import GlobalReducer from './reducers/global';
-import RoomReducer from './reducers/rooms';
+import ChatReducer from './reducers/chat';
 
 const reducers = combineReducers({
   GlobalReducer,
   LoginReducer,
   RegisterReducer,
-  RoomReducer
+  ChatReducer
 });
 
 const store = createStore(reducers, {}, applyMiddleware(thunk, logger));

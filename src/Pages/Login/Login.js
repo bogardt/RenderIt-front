@@ -15,8 +15,8 @@ class Login extends Component {
 
   constructor(props) {
     super(props);
-    const { reset } = this.props;
-    reset();
+    const { resetLogin } = this.props;
+    resetLogin();
   }
 
   handleChangeEmail = e => {
@@ -103,7 +103,7 @@ class Login extends Component {
 
 Login.propTypes = {
   signIn: PropTypes.func.isRequired,
-  reset: PropTypes.func.isRequired,
+  resetLogin: PropTypes.func.isRequired,
   jwt: PropTypes.string.isRequired,
   serverConnectAction: PropTypes.func.isRequired
 };
@@ -118,7 +118,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   signIn: (email, password) => dispatch(LoginAction(email, password)),
-  reset: () => dispatch(ResetLoginState()),
+  resetLogin: () => dispatch(ResetLoginState()),
   serverConnectAction: (email, jwt) => dispatch(ServerConnectAction(email, jwt))
 });
 

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { ChangeSelectedRoom } from '../redux/actions/rooms';
+import { ChangeSelectedRoom } from '../redux/actions/chat';
 import './DisplayRooms.css';
 
 class DisplayRooms extends Component {
@@ -57,8 +57,8 @@ DisplayRooms.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  rooms: state.RoomReducer.rooms,
-  selectedRoom: state.RoomReducer.selectedRoom
+  rooms: state.ChatReducer.rooms,
+  selectedRoom: state.ChatReducer.selectedRoom
 });
 
 const mapDispatchToProps = dispatch => ({

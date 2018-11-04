@@ -1,4 +1,5 @@
 import io from 'socket.io-client';
+import axios from 'axios';
 import toaster from '../../Utils/Toaster';
 import SocketSingleton from '../../Utils/SocketSingleton';
 
@@ -82,6 +83,34 @@ const setTypingEventSent = () => ({
 const setStopTypingEventSent = () => ({
   type: 'SET_STOP_TYPING_EVENT_SENT'
 });
+const setSelectedRoom = selectedRoom => ({
+  type: 'SET_SELECTED_ROOM',
+  selectedRoom
+});
+
+const setUserRooms = rooms => ({
+  type: 'SET_USER_ROOMS',
+  rooms
+});
+
+export const ChangeSelectedRoom = selectedRoom => dispatch => {
+  dispatch(setSelectedRoom(selectedRoom));
+};
+
+export const GetRooms = jwt => dispatch => {
+  axios
+    .get('/api/users/rooms', {
+      headers: {
+        Authorization: `Bearer ${jwt}`
+      }
+    })
+    .then(response => {
+      dispatch(setUserRooms(response.data.rooms));
+    })
+    .catch(error => {
+      console.log(`error: ${JSON.stringify(error)}`);
+    });
+};
 
 export const TypingAction = roomId => dispatch => {
   SocketSingleton.socket.emit('typing', roomId);
@@ -104,14 +133,14 @@ export const JoinRoomAction = roomId => dispatch => {
 };
 
 export const AddFriendInRoomAction = (userId, roomId) => dispatch => {
-  console.log('userId: ' + userId)
-  console.log('roomId: ' + roomId)
+  console.log(`userId: ${userId}`);
+  console.log(`roomId: ${roomId}`);
   SocketSingleton.socket.emit('add-friend', userId, roomId);
   dispatch(setAddFriendToRoomEventSent());
 };
 
 export const CreateRoomAction = roomName => dispatch => {
-  console.log('roomName: ' + roomName)
+  console.log(`roomName: ${roomName}`);
   SocketSingleton.socket.emit('create-room', roomName);
   dispatch(setCreateRoomEventSent());
 };
@@ -135,12 +164,12 @@ export const ServerConnectAction = (email, bearer) => dispatch => {
 
     socket.on('success', message => {
       dispatch(setSuccessEventReceived());
-      toaster.success(message);
+      // toaster.success(message);
     });
 
     socket.on('fail', message => {
       dispatch(setErrorEventReceived());
-      toaster.error(message);
+      // toaster.error(message);
     });
 
     socket.on('join-room', room => {
@@ -150,12 +179,24 @@ export const ServerConnectAction = (email, bearer) => dispatch => {
 
     socket.on('add-friend', message => {
       dispatch(setAddFriendToRoomEventReceived());
-      toaster.success(message);
+      toaster.success(`Added friend to room ${message.name}`);
     });
 
     socket.on('create-room', room => {
       dispatch(setCreateRoomEventReceived());
-      toaster.success(room);
+      toaster.success(`Created room ${room.name}`);
+      axios
+        .get('/api/users/rooms', {
+          headers: {
+            Authorization: `Bearer ${bearer}`
+          }
+        })
+        .then(response => {
+          dispatch(setUserRooms(response.data.rooms));
+        })
+        .catch(error => {
+          console.log(`error: ${JSON.stringify(error)}`);
+        });
     });
 
     socket.on('leave-room', message => {

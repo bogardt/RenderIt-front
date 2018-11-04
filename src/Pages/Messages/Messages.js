@@ -3,11 +3,9 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Cookies from 'universal-cookie';
 import { Redirect } from 'react-router-dom';
-// import openSocket from 'socket.io-client';
 import DisplayRooms from '../../Components/DisplayRooms';
 import DisplayMessages from '../../Components/DisplayMessages';
 import FriendsList from '../../Components/FriendsList';
-import { ChangeSelectedRoom, SendMessage, GetRooms } from '../../redux/actions/rooms';
 import {
   GetMeAction,
   SearchFriendsAction,
@@ -18,13 +16,14 @@ import {
   StopTypingAction,
   TypingAction,
   CreateRoomAction,
-  AddFriendInRoomAction
+  AddFriendInRoomAction,
+  SendMessageAction,
+  ChangeSelectedRoom,
+  GetRooms
 } from '../../redux/actions/chat';
 import './Messages.css';
 
 const cookies = new Cookies();
-
-// const socket = openSocket(window.location.origin);
 
 class Messages extends Component {
   input = '';
@@ -55,8 +54,8 @@ class Messages extends Component {
 
   handleSendInput = e => {
     e.preventDefault();
-    const { selectedRoom, sendMessage } = this.props;
-    sendMessage(selectedRoom, this.input);
+    const { selectedRoom, sendMessage, rooms } = this.props;
+    sendMessage(this.input, rooms[selectedRoom].id);
   };
 
   handleChangeSearchFriends = e => {
@@ -198,8 +197,8 @@ Messages.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  rooms: state.RoomReducer.rooms,
-  selectedRoom: state.RoomReducer.selectedRoom,
+  rooms: state.ChatReducer.rooms,
+  selectedRoom: state.ChatReducer.selectedRoom,
   allowed: state.GlobalReducer.allowed,
   userChecked: state.GlobalReducer.userChecked,
   friends: state.GlobalReducer.friends,
@@ -209,7 +208,6 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   getInfo: jwt => dispatch(GetMeAction(jwt)),
   getRooms: jwt => dispatch(GetRooms(jwt)),
-  sendMessage: (selectedRoom, message) => dispatch(SendMessage(selectedRoom, message)),
   changeSelectedRoom: selectedRoom => dispatch(ChangeSelectedRoom(selectedRoom)),
   searchFriends: (jwt, searchFriends) => dispatch(SearchFriendsAction(jwt, searchFriends)),
   removeFriend: (jwt, friend) => dispatch(RemoveFriendAction(jwt, friend)),
@@ -217,7 +215,8 @@ const mapDispatchToProps = dispatch => ({
   resetFriends: () => dispatch(ResetFriendsAction()),
   TypingAction: selectedRoom => dispatch(TypingAction(selectedRoom)),
   StopTypingAction: selectedRoom => dispatch(StopTypingAction(selectedRoom)),
-  addFriendInRoom: (friendId, roomId) => dispatch(AddFriendInRoomAction(friendId, roomId))
+  addFriendInRoom: (friendId, roomId) => dispatch(AddFriendInRoomAction(friendId, roomId)),
+  sendMessage: (message, roomId) => dispatch(SendMessageAction(message, roomId))
 });
 
 export default connect(
