@@ -4,13 +4,6 @@ class SocketSingleton {
     this.socket = null;
   }
 
-  singletonMethod() {
-    return 'singletonMethod';
-  }
-  static staticMethod() {
-    return 'staticMethod';
-  }
-
   get type() {
     return this.type;
   }

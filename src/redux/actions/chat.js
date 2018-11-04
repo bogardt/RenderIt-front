@@ -76,38 +76,32 @@ const setStopTypingEventSent = () => ({
 });
 
 export const TypingAction = roomId => dispatch => {
-  const socket = SocketSingleton.getSocket();
-  socket.emit('typing', roomId);
+  SocketSingleton.socket.emit('typing', roomId);
   dispatch(setTypingEventSent);
 };
 
 export const StopTypingAction = roomId => dispatch => {
-  const socket = SocketSingleton.getSocket();
-  socket.emit('stop-typing', roomId);
+  SocketSingleton.socket.emit('stop-typing', roomId);
   dispatch(setStopTypingEventSent);
 };
 
 export const SendMessageAction = (message, roomId) => dispatch => {
-  const socket = SocketSingleton.getSocket();
-  socket.emit('message', message, roomId);
+  SocketSingleton.socket.emit('message', message, roomId);
   dispatch(setMessageEventSent());
 };
 
 export const JoinRoomAction = roomId => dispatch => {
-  const socket = SocketSingleton.getSocket();
-  socket.emit('join-room', roomId);
+  SocketSingleton.socket.emit('join-room', roomId);
   dispatch(setJoinRoomEventSent());
 };
 
 export const CreateRoomAction = roomName => dispatch => {
-  const socket = SocketSingleton.getSocket();
-  socket.emit('create-room', roomName);
+  SocketSingleton.socket.emit('create-room', roomName);
   dispatch(setCreateRoomEventSent());
 };
 
 export const LeaveRoomAction = roomId => dispatch => {
-  const socket = SocketSingleton.getSocket();
-  socket.emit('leave-room', roomId);
+  SocketSingleton.socket.emit('leave-room', roomId);
   dispatch(setLeaveRoomEventSent());
 };
 
@@ -168,7 +162,7 @@ export const SocketEventManagerAction = (email, bearer, socket) => dispatch => {
 export const ServerConnectAction = (email, bearer) => dispatch => {
   dispatch(setSocketConnectPending(true));
   const socket = io('http://localhost:4000');
-  SocketSingleton.setSocket(socket);
+  SocketSingleton.socket = socket;
   if (this.context.socket) {
     dispatch(setIsSocketConnected(true));
     SocketEventManagerAction(email, bearer, socket);
