@@ -119,7 +119,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   signIn: (email, password) => dispatch(LoginAction(email, password)),
   reset: () => dispatch(ResetLoginState()),
-  serverConnectAction: () => dispatch(ServerConnectAction())
+  serverConnectAction: (email, jwt) => dispatch(ServerConnectAction(email, jwt))
 });
 
 export default connect(

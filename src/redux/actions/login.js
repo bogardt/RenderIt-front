@@ -1,6 +1,5 @@
 import axios from 'axios';
 import toaster from '../../Utils/Toaster';
-import { ServerConnectAction } from './chat';
 
 const setLoginPending = isLoginPending => ({
   type: 'SET_LOGGING_PENDING',

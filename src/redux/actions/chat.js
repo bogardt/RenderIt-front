@@ -105,66 +105,62 @@ export const LeaveRoomAction = roomId => dispatch => {
   dispatch(setLeaveRoomEventSent());
 };
 
-export const SocketEventManagerAction = (email, bearer, socket) => dispatch => {
-  socket.on('authorization', message => {
-    dispatch(setAuthorizationEventReceived(message));
-    socket.emit('authorization', email, bearer);
-    dispatch(setAuthorizationEventSent());
-  });
-
-  socket.on('success', message => {
-    dispatch(setSuccessEventReceived());
-    toaster.success(message);
-  });
-
-  socket.on('error', message => {
-    dispatch(setErrorEventReceived());
-    toaster.error(message);
-  });
-
-  socket.on('join-room', room => {
-    dispatch(setJoinRoomEventReceived());
-    // objet room avec id history user etc..
-  });
-
-  socket.on('create-room', room => {
-    dispatch(setCreateRoomEventReceived());
-    // objet room avec id history user etc..
-  });
-
-  socket.on('leave-room', message => {
-    dispatch(setLeaveRoomEventReceived());
-    if (message.includes('Success')) {
-      dispatch(setSuccessEventReceived());
-      toaster.success(message);
-    } else {
-      dispatch(setErrorEventReceived());
-      toaster.error(message);
-    }
-  });
-
-  socket.on('message', history => {
-    dispatch(setMessageEventReceived());
-    // tableau de message, history complet de la room
-  });
-
-  socket.on('typing', room => {
-    dispatch(setTypingEventReceived());
-    // objet room avec id history user etc..
-  });
-
-  socket.on('stop-typing', room => {
-    dispatch(setStopTypingEventReceived());
-    // objet room avec id history user etc..
-  });
-};
-
 export const ServerConnectAction = (email, bearer) => dispatch => {
   dispatch(setSocketConnectPending(true));
   const socket = io('http://localhost:4000');
   if (socket) {
     SocketSingleton.socket = socket;
     dispatch(setIsSocketConnected(true));
-    SocketEventManagerAction(email, bearer, socket);
+    socket.on('authorization', message => {
+      dispatch(setAuthorizationEventReceived(message));
+      socket.emit('authorization', email, bearer);
+      dispatch(setAuthorizationEventSent());
+    });
+
+    socket.on('success', message => {
+      dispatch(setSuccessEventReceived());
+      toaster.success(message);
+    });
+
+    socket.on('error', message => {
+      dispatch(setErrorEventReceived());
+      toaster.error(message);
+    });
+
+    socket.on('join-room', room => {
+      dispatch(setJoinRoomEventReceived());
+      // objet room avec id history user etc..
+    });
+
+    socket.on('create-room', room => {
+      dispatch(setCreateRoomEventReceived());
+      // objet room avec id history user etc..
+    });
+
+    socket.on('leave-room', message => {
+      dispatch(setLeaveRoomEventReceived());
+      if (message.includes('Success')) {
+        dispatch(setSuccessEventReceived());
+        toaster.success(message);
+      } else {
+        dispatch(setErrorEventReceived());
+        toaster.error(message);
+      }
+    });
+
+    socket.on('message', history => {
+      dispatch(setMessageEventReceived());
+      // tableau de message, history complet de la room
+    });
+
+    socket.on('typing', room => {
+      dispatch(setTypingEventReceived());
+      // objet room avec id history user etc..
+    });
+
+    socket.on('stop-typing', room => {
+      dispatch(setStopTypingEventReceived());
+      // objet room avec id history user etc..
+    });
   } else dispatch(setIsSocketConnected(false));
 };
