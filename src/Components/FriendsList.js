@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './FriendsList.css';
 
-const FriendsList = ({ friends, deleteFriend }) => (
+const FriendsList = ({ friends, friendFunc }) => (
   <ul className="list-group">
     {friends.map(friend => (
       <li className="list-group-item d-flex justify-content-between align-items-center">
@@ -10,7 +10,7 @@ const FriendsList = ({ friends, deleteFriend }) => (
         <i
           className="fa fa-trash ri-icon"
           aria-hidden="true"
-          onClick={event => deleteFriend(friend, event)}
+          onClick={event => friendFunc(friend, event)}
         />
       </li>
     ))}
@@ -19,7 +19,7 @@ const FriendsList = ({ friends, deleteFriend }) => (
 
 FriendsList.propTypes = {
   friends: PropTypes.arrayOf(PropTypes.string).isRequired,
-  deleteFriend: PropTypes.func.isRequired
+  friendFunc: PropTypes.func.isRequired
 };
 
 export default FriendsList;
