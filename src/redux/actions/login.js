@@ -1,5 +1,6 @@
 import axios from 'axios';
 import toaster from '../../Utils/Toaster';
+import { ServerConnectAction } from './chat';
 
 const setLoginPending = isLoginPending => ({
   type: 'SET_LOGGING_PENDING',
@@ -46,6 +47,7 @@ export const LoginAction = (email, password) => dispatch => {
       );
       if (response.status === 200) {
         toaster.success(response.data.bearer);
+        ServerConnectAction();
       } else {
         toaster.error(response.data);
       }
