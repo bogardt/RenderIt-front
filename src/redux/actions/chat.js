@@ -123,6 +123,8 @@ export const StopTypingAction = roomId => dispatch => {
 };
 
 export const SendMessageAction = (message, roomId) => dispatch => {
+  console.log(message);
+  console.log(roomId);
   SocketSingleton.socket.emit('message', message, roomId);
   dispatch(setMessageEventSent());
 };
@@ -212,6 +214,18 @@ export const ServerConnectAction = (email, bearer) => dispatch => {
 
     socket.on('message', history => {
       dispatch(setMessageEventReceived());
+      axios
+        .get('/api/users/rooms', {
+          headers: {
+            Authorization: `Bearer ${bearer}`
+          }
+        })
+        .then(response => {
+          dispatch(setUserRooms(response.data.rooms));
+        })
+        .catch(error => {
+          console.log(`error: ${JSON.stringify(error)}`);
+        });
       // tableau de message, history complet de la room
     });
 
