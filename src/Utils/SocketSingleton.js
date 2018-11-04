@@ -1,23 +1,14 @@
 class SocketSingleton {
   constructor() {
-    this.type = 'SocketSingleton';
     this.socket = null;
   }
 
-  get type() {
-    return this.type;
-  }
-
-  set type(value) {
-    this.type = value;
-  }
-
-  get socket() {
+  get Socket() {
     return this.socket;
   }
 
-  set socket(socket) {
-    this.socket = socket;
+  set Socket(value) {
+    this.socket = value;
   }
 }
 
