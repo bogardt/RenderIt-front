@@ -65,7 +65,7 @@ const setAddFriendToRoomEventSent = () => ({
 });
 
 const setCreateRoomEventSent = () => ({
-  type: 'SET_CREATE_ROOM_EVENT_RECEIVED'
+  type: 'SET_CREATE_ROOM_EVENT_SENT'
 });
 
 const setLeaveRoomEventSent = () => ({
