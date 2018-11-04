@@ -53,7 +53,8 @@ export const AddFriendAction = (jwt, friendId) => () => {
       }
     })
     .catch(error => {
-      toaster.error(error.respoonse.data.message);
+      console.log(error);
+      toaster.error(error.response.message);
     });
 };
 

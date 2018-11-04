@@ -143,7 +143,7 @@ class Messages extends Component {
               </div>
               <FriendsList
                 friends={friends}
-                friendFunc={this.handleRemoveFriend}
+                friendFunc={this.handleAddFriendToConv}
                 iconClassName="fa-plus"
               />
               {rooms.length > 0 && (
