@@ -20,6 +20,10 @@ const setJoinRoomEventReceived = () => ({
   type: 'SET_JOIN_ROOM_EVENT_RECEIVED'
 });
 
+const setAddFriendToRoomEventReceived = () => ({
+  type: 'SET_ADD_FRIEND_TO_ROOM_EVENT_RECEIVED'
+});
+
 const setCreateRoomEventReceived = () => ({
   type: 'SET_CREATE_ROOM_EVENT_RECEIVED'
 });
@@ -53,6 +57,10 @@ const setAuthorizationEventSent = () => ({
 
 const setJoinRoomEventSent = () => ({
   type: 'SET_JOIN_ROOM_EVENT_SENT'
+});
+
+const setAddFriendToRoomEventSent = () => ({
+  type: 'SET_ADD_FRIEND_TO_ROOM_EVENT_SENT'
 });
 
 const setCreateRoomEventSent = () => ({
@@ -95,6 +103,11 @@ export const JoinRoomAction = roomId => dispatch => {
   dispatch(setJoinRoomEventSent());
 };
 
+export const AddFriendInRoomAction = (userId, roomId) => dispatch => {
+  SocketSingleton.socket.emit('add-friend', userId, roomId);
+  dispatch(setAddFriendToRoomEventSent());
+};
+
 export const CreateRoomAction = roomName => dispatch => {
   SocketSingleton.socket.emit('create-room', roomName);
   dispatch(setCreateRoomEventSent());
@@ -122,7 +135,7 @@ export const ServerConnectAction = (email, bearer) => dispatch => {
       toaster.success(message);
     });
 
-    socket.on('error', message => {
+    socket.on('fail', message => {
       dispatch(setErrorEventReceived());
       toaster.error(message);
     });
@@ -130,6 +143,11 @@ export const ServerConnectAction = (email, bearer) => dispatch => {
     socket.on('join-room', room => {
       dispatch(setJoinRoomEventReceived());
       // objet room avec id history user etc..
+    });
+
+    socket.on('add-friend', message => {
+      dispatch(setAddFriendToRoomEventReceived());
+      toaster.success(message);
     });
 
     socket.on('create-room', room => {

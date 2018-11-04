@@ -30,6 +30,11 @@ const ChatReducer = (state = initialState, action) => {
         setJoinRoomEventReceived: action.setJoinRoomEventReceived
       };
 
+    case 'SET_ADD_FRIEND_TO_ROOM_EVENT_RECEIVED':
+      return {
+        ...state
+      };
+
     case 'SET_CREATE_ROOM_EVENT_RECEIVED':
       return {
         ...state
@@ -84,6 +89,11 @@ const ChatReducer = (state = initialState, action) => {
       return {
         ...state,
         setJoinRoomEventSent: action.setJoinRoomEventSent
+      };
+
+    case 'SET_ADD_FRIEND_TO_ROOM_EVENT_SENT':
+      return {
+        ...state
       };
 
     case 'SET_CREATE_ROOM_EVENT_SENT':
