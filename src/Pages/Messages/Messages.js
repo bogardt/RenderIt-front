@@ -103,7 +103,9 @@ class Messages extends Component {
             </div>
 
             <div className="mesgs">
-              <DisplayMessages history={rooms[selectedRoom].history} email={email} />
+              {rooms.length > 0 && (
+                <DisplayMessages history={rooms[selectedRoom].history} email={email} />
+              )}
               <div className="type_msg">
                 <div className="input_msg_write">
                   <input
