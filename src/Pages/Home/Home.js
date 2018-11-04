@@ -29,10 +29,10 @@ class Home extends Component {
     searchUsers(this.jwt, this.search);
   };
 
-  handleAddFriend = (email, e) => {
+  handleAddFriend = (friend, e) => {
     e.preventDefault();
     const { addFriend } = this.props;
-    addFriend(this.jwt, email);
+    addFriend(this.jwt, friend.id);
   };
 
   render() {

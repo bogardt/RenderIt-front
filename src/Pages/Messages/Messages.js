@@ -7,14 +7,19 @@ import { Redirect } from 'react-router-dom';
 import DisplayRooms from '../../Components/DisplayRooms';
 import DisplayMessages from '../../Components/DisplayMessages';
 import FriendsList from '../../Components/FriendsList';
+import { ChangeSelectedRoom, SendMessage, GetRooms } from '../../redux/actions/rooms';
 import {
   GetMeAction,
   SearchFriendsAction,
   RemoveFriendAction,
   ResetFriendsAction
 } from '../../redux/actions/global';
-import { ChangeSelectedRoom, SendMessage, GetRooms } from '../../redux/actions/rooms';
-import { StopTypingAction, TypingAction, CreateRoomAction } from '../../redux/actions/chat';
+import {
+  StopTypingAction,
+  TypingAction,
+  CreateRoomAction,
+  AddFriendInRoomAction
+} from '../../redux/actions/chat';
 import './Messages.css';
 
 const cookies = new Cookies();
@@ -84,7 +89,8 @@ class Messages extends Component {
   };
 
   handleAddFriendToConv = (friend, e) => {
-    // 
+    const { addFriendInRoom, rooms, selectedRoom } = this.props;
+    addFriendInRoom(friend.id, rooms[selectedRoom].id);
   };
 
   render() {
@@ -120,9 +126,9 @@ class Messages extends Component {
             </div>
 
             <div className="mesgs">
-              <div className="search-box">
+              <div className="search-box ri-search-boox-room-container">
                 <input
-                  className="form-control"
+                  className="form-control ri-add-room-input"
                   placeholder="want to add friend to this conversation ?"
                   type="text"
                   onChange={this.handleChangeSearchFriends}
@@ -172,6 +178,7 @@ Messages.propTypes = {
   getRooms: PropTypes.func.isRequired,
   addRoom: PropTypes.func.isRequired,
   resetFriends: PropTypes.func.isRequired,
+  addFriendInRoom: PropTypes.func.isRequired,
   rooms: PropTypes.arrayOf(
     PropTypes.shape({
       history: PropTypes.arrayOf(
@@ -209,7 +216,8 @@ const mapDispatchToProps = dispatch => ({
   addRoom: (jwt, name) => dispatch(CreateRoomAction(name)),
   resetFriends: () => dispatch(ResetFriendsAction()),
   TypingAction: selectedRoom => dispatch(TypingAction(selectedRoom)),
-  StopTypingAction: selectedRoom => dispatch(StopTypingAction(selectedRoom))
+  StopTypingAction: selectedRoom => dispatch(StopTypingAction(selectedRoom)),
+  addFriendInRoom: (friendId, roomId) => dispatch(AddFriendInRoomAction(friendId, roomId))
 });
 
 export default connect(

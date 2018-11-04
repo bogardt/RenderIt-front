@@ -104,11 +104,14 @@ export const JoinRoomAction = roomId => dispatch => {
 };
 
 export const AddFriendInRoomAction = (userId, roomId) => dispatch => {
+  console.log('userId: ' + userId)
+  console.log('roomId: ' + roomId)
   SocketSingleton.socket.emit('add-friend', userId, roomId);
   dispatch(setAddFriendToRoomEventSent());
 };
 
 export const CreateRoomAction = roomName => dispatch => {
+  console.log('roomName: ' + roomName)
   SocketSingleton.socket.emit('create-room', roomName);
   dispatch(setCreateRoomEventSent());
 };

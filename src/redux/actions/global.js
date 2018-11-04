@@ -34,11 +34,11 @@ export const GetMeAction = jwt => dispatch => {
     });
 };
 
-export const AddFriendAction = (jwt, email) => () => {
+export const AddFriendAction = (jwt, friendId) => () => {
   axios
     .post(
       '/api/users/friends',
-      { email },
+      { id: friendId },
       {
         headers: {
           Authorization: `Bearer ${jwt}`

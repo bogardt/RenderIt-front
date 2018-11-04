@@ -11,7 +11,7 @@ const UserList = ({ users, addFriend }) => (
           <i
             className="fa fa-plus ri-icon"
             aria-hidden="true"
-            onClick={event => addFriend(user.email, event)}
+            onClick={event => addFriend(user, event)}
           />
         )}
       </li>
@@ -23,7 +23,8 @@ UserList.propTypes = {
   users: PropTypes.arrayOf(
     PropTypes.shape({
       email: PropTypes.string.isRequired,
-      friend: PropTypes.bool.isRequired
+      friend: PropTypes.bool.isRequired,
+      id: PropTypes.string.isRequired
     }).isRequired
   ).isRequired,
   addFriend: PropTypes.func.isRequired

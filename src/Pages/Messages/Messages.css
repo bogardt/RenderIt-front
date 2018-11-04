@@ -243,3 +243,11 @@ img {
 .ri-add-room-btn {
   cursor: pointer;
 }
+
+.ri-add-room-input {
+  padding-left: 10px;
+}
+
+.ri-search-boox-room-container {
+  margin-left: 10px;
+}
