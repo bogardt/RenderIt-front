@@ -244,7 +244,7 @@ export const ServerConnectAction = (email, bearer) => dispatch => {
       }
     });
 
-    socket.on('message', history => {
+    socket.on('room-response', history => {
       dispatch(setMessageEventReceived());
       axios
         .get(`/api/room/${history.toString()}`, {

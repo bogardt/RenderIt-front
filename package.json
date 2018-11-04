@@ -27,7 +27,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "./node_modules/eslint/bin/eslint.js src/Components/ src/Pages/ src/redux/ src/redux/actions src/redux/reducers"
   },
   "devDependencies": {
     "eslint": "^5.7.0",

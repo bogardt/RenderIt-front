@@ -53,7 +53,8 @@ DisplayRooms.propTypes = {
     }).isRequired
   ).isRequired,
   changeSelectedRoom: PropTypes.func.isRequired,
-  selectedRoom: PropTypes.number.isRequired
+  selectedRoom: PropTypes.number.isRequired,
+  jwt: PropTypes.string.isRequired
 };
 
 const mapStateToProps = state => ({
