@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { Redirect, Link } from 'react-router-dom';
 import Cookies from 'universal-cookie';
 import { LoginAction, ResetLoginState } from '../../redux/actions/login';
+import { ServerConnectAction } from '../../redux/actions/chat';
 
 const cookies = new Cookies();
 
@@ -33,10 +34,11 @@ class Login extends Component {
   };
 
   render() {
-    const { jwt } = this.props;
+    const { jwt, serverConnectAction } = this.props;
     if (jwt && jwt.length > 0) {
       cookies.set('jwt', jwt);
       cookies.set('email', this.email);
+      serverConnectAction(this.email, jwt);
       return <Redirect to="/home" />;
     }
     return (
@@ -102,7 +104,8 @@ class Login extends Component {
 Login.propTypes = {
   signIn: PropTypes.func.isRequired,
   reset: PropTypes.func.isRequired,
-  jwt: PropTypes.string.isRequired
+  jwt: PropTypes.string.isRequired,
+  serverConnectAction: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -115,7 +118,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   signIn: (email, password) => dispatch(LoginAction(email, password)),
-  reset: () => dispatch(ResetLoginState())
+  reset: () => dispatch(ResetLoginState()),
+  serverConnectAction: () => dispatch(ServerConnectAction())
 });
 
 export default connect(

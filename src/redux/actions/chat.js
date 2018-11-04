@@ -162,8 +162,8 @@ export const SocketEventManagerAction = (email, bearer, socket) => dispatch => {
 export const ServerConnectAction = (email, bearer) => dispatch => {
   dispatch(setSocketConnectPending(true));
   const socket = io('http://localhost:4000');
-  SocketSingleton.socket = socket;
-  if (this.context.socket) {
+  if (socket) {
+    SocketSingleton.socket = socket;
     dispatch(setIsSocketConnected(true));
     SocketEventManagerAction(email, bearer, socket);
   } else dispatch(setIsSocketConnected(false));
