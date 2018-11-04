@@ -52,7 +52,6 @@ class Home extends Component {
                   type="text"
                   onChange={this.handleChangeSearch}
                 />
-                <i className="fa fa-search" aria-hidden="true" />
               </form>
             </div>
           </div>
