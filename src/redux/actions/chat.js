@@ -129,7 +129,7 @@ export const ServerConnectAction = (email, bearer) => dispatch => {
     dispatch(setIsSocketConnected(true));
     socket.on('authorization', message => {
       dispatch(setAuthorizationEventReceived(message));
-      socket.emit('authorization', email, bearer);
+      socket.emit('authorization', email);
       dispatch(setAuthorizationEventSent());
     });
 
@@ -155,7 +155,7 @@ export const ServerConnectAction = (email, bearer) => dispatch => {
 
     socket.on('create-room', room => {
       dispatch(setCreateRoomEventReceived());
-      // objet room avec id history user etc..
+      toaster.success(room);
     });
 
     socket.on('leave-room', message => {
