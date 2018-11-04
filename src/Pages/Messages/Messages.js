@@ -7,7 +7,12 @@ import { Redirect } from 'react-router-dom';
 import DisplayRooms from '../../Components/DisplayRooms';
 import DisplayMessages from '../../Components/DisplayMessages';
 import FriendsList from '../../Components/FriendsList';
-import { GetMeAction, SearchFriendsAction, RemoveFriendAction } from '../../redux/actions/global';
+import {
+  GetMeAction,
+  SearchFriendsAction,
+  RemoveFriendAction,
+  ResetFriendsAction
+} from '../../redux/actions/global';
 import { ChangeSelectedRoom, SendMessage, GetRooms } from '../../redux/actions/rooms';
 import { StopTypingAction, TypingAction, CreateRoomAction } from '../../redux/actions/chat';
 import './Messages.css';
@@ -52,7 +57,9 @@ class Messages extends Component {
   handleChangeSearchFriends = e => {
     this.searchFriendsInput = e.target.value;
     const { searchFriends } = this.props;
-    searchFriends(this.jwt, this.searchFriendsInput);
+    if (this.searchFriendsInput.length > 0) {
+      searchFriends(this.jwt, this.searchFriendsInput);
+    }
   };
 
   handleRemoveFriend = (friend, e) => {
@@ -71,8 +78,13 @@ class Messages extends Component {
   };
 
   handleClickOnRemoveSearchFriends = () => {
-    const e = { target: { value: '' } };
-    this.handleChangeSearchFriends(e);
+    const { resetFriends } = this.props;
+    this.searchFriendsInput = '';
+    resetFriends();
+  };
+
+  handleAddFriendToConv = (friend, e) => {
+    // 
   };
 
   render() {
@@ -109,23 +121,25 @@ class Messages extends Component {
 
             <div className="mesgs">
               <div className="search-box">
-                <form className="search-form">
-                  <input
-                    className="form-control"
-                    placeholder="looking for someone ?"
-                    type="text"
-                    onChange={this.handleChangeSearchFriends}
+                <input
+                  className="form-control"
+                  placeholder="want to add friend to this conversation ?"
+                  type="text"
+                  onChange={this.handleChangeSearchFriends}
+                />
+                <button className="btn btn-link search-btn">
+                  <i
+                    className="fa fa-close"
+                    aria-hidden="true"
+                    onClick={this.handleClickOnRemoveSearchFriends}
                   />
-                  <button className="btn btn-link search-btn">
-                    <i
-                      className="fa fa-close"
-                      aria-hidden="true"
-                      onClick={this.handleClickOnRemoveSearchFriends}
-                    />
-                  </button>
-                </form>
+                </button>
               </div>
-              <FriendsList friends={friends} friendFunc={this.handleRemoveFriend} />
+              <FriendsList
+                friends={friends}
+                friendFunc={this.handleRemoveFriend}
+                iconClassName="fa-plus"
+              />
               {rooms.length > 0 && (
                 <DisplayMessages history={rooms[selectedRoom].history} email={email} />
               )}
@@ -157,6 +171,7 @@ Messages.propTypes = {
   removeFriend: PropTypes.func.isRequired,
   getRooms: PropTypes.func.isRequired,
   addRoom: PropTypes.func.isRequired,
+  resetFriends: PropTypes.func.isRequired,
   rooms: PropTypes.arrayOf(
     PropTypes.shape({
       history: PropTypes.arrayOf(
@@ -192,6 +207,7 @@ const mapDispatchToProps = dispatch => ({
   searchFriends: (jwt, searchFriends) => dispatch(SearchFriendsAction(jwt, searchFriends)),
   removeFriend: (jwt, friend) => dispatch(RemoveFriendAction(jwt, friend)),
   addRoom: (jwt, name) => dispatch(CreateRoomAction(name)),
+  resetFriends: () => dispatch(ResetFriendsAction()),
   TypingAction: selectedRoom => dispatch(TypingAction(selectedRoom)),
   StopTypingAction: selectedRoom => dispatch(StopTypingAction(selectedRoom))
 });

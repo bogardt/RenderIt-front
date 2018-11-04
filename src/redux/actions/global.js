@@ -107,6 +107,10 @@ export const SearchFriendsAction = (jwt, search) => dispatch => {
     });
 };
 
+export const ResetFriendsAction = () => dispatch => {
+  dispatch(setFriendsSearch([]));
+};
+
 export const AddRoomAction = (jwt, name) => dispatch => {
   axios
     .post(
