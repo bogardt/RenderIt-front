@@ -93,7 +93,7 @@ class Messages extends Component {
   };
 
   render() {
-    const { rooms, selectedRoom, userChecked, allowed, friends, email } = this.props;
+    const { rooms, userChecked, allowed, friends, email, history } = this.props;
     console.log(friends);
     if (userChecked && !allowed) {
       return <Redirect to="/login" />;
@@ -145,9 +145,7 @@ class Messages extends Component {
                 friendFunc={this.handleAddFriendToConv}
                 iconClassName="fa-plus"
               />
-              {rooms.length > 0 && (
-                <DisplayMessages history={rooms[selectedRoom].history} email={email} />
-              )}
+              {rooms.length > 0 && <DisplayMessages history={history} email={email} />}
               <div className="type_msg">
                 <div className="input_msg_write">
                   <input
@@ -189,6 +187,13 @@ Messages.propTypes = {
       ).isRequired
     }).isRequired
   ).isRequired,
+  history: PropTypes.arrayOf(
+    PropTypes.shape({
+      message: PropTypes.string.isRequired,
+      date: PropTypes.string.isRequired,
+      from: PropTypes.string.isRequired
+    })
+  ).isRequired,
   selectedRoom: PropTypes.number.isRequired,
   allowed: PropTypes.bool.isRequired,
   userChecked: PropTypes.bool.isRequired,
@@ -198,6 +203,7 @@ Messages.propTypes = {
 
 const mapStateToProps = state => ({
   rooms: state.ChatReducer.rooms,
+  history: state.ChatReducer.history,
   selectedRoom: state.ChatReducer.selectedRoom,
   allowed: state.GlobalReducer.allowed,
   userChecked: state.GlobalReducer.userChecked,

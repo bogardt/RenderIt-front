@@ -6,8 +6,8 @@ import './DisplayRooms.css';
 
 class DisplayRooms extends Component {
   handleChangeSelectedRoom = index => {
-    const { changeSelectedRoom } = this.props;
-    changeSelectedRoom(index);
+    const { jwt, changeSelectedRoom, rooms } = this.props;
+    changeSelectedRoom(jwt, rooms[index].id, index);
   };
 
   render() {
@@ -57,12 +57,14 @@ DisplayRooms.propTypes = {
 };
 
 const mapStateToProps = state => ({
+  jwt: state.GlobalReducer.jwt,
   rooms: state.ChatReducer.rooms,
   selectedRoom: state.ChatReducer.selectedRoom
 });
 
 const mapDispatchToProps = dispatch => ({
-  changeSelectedRoom: selectedRoom => dispatch(ChangeSelectedRoom(selectedRoom))
+  changeSelectedRoom: (jwt, roomId, selectedRoom) =>
+    dispatch(ChangeSelectedRoom(jwt, roomId, selectedRoom))
 });
 
 export default connect(

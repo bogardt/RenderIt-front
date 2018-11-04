@@ -93,8 +93,25 @@ const setUserRooms = rooms => ({
   rooms
 });
 
-export const ChangeSelectedRoom = selectedRoom => dispatch => {
-  dispatch(setSelectedRoom(selectedRoom));
+const setCurrentHistory = history => ({
+  type: 'SET_USER_HISTORY',
+  history
+});
+
+export const ChangeSelectedRoom = (bearer, roomId, index) => dispatch => {
+  dispatch(setSelectedRoom(index));
+  axios
+    .get(`/api/room/${roomId}`, {
+      headers: {
+        Authorization: `Bearer ${bearer}`
+      }
+    })
+    .then(response => {
+      dispatch(setCurrentHistory(response.data.history));
+    })
+    .catch(error => {
+      console.log(`error: ${JSON.stringify(error)}`);
+    });
 };
 
 export const GetRooms = jwt => dispatch => {
@@ -111,6 +128,21 @@ export const GetRooms = jwt => dispatch => {
       console.log(`error: ${JSON.stringify(error)}`);
     });
 };
+
+export const GetRoom = (jwt, roomId) => dispatch => {
+  axios
+    .get(`/api/room/${roomId}`, {
+      headers: {
+        Authorization: `Bearer ${jwt}`
+      }
+    })
+    .then(response => {
+      dispatch(setCurrentHistory(response.data.history));
+    })
+    .catch(error => {
+      console.log(`error: ${JSON.stringify(error)}`);
+    });
+}
 
 export const TypingAction = roomId => dispatch => {
   SocketSingleton.socket.emit('typing', roomId);
@@ -215,18 +247,17 @@ export const ServerConnectAction = (email, bearer) => dispatch => {
     socket.on('message', history => {
       dispatch(setMessageEventReceived());
       axios
-        .get('/api/users/rooms', {
+        .get(`/api/room/${history.toString()}`, {
           headers: {
             Authorization: `Bearer ${bearer}`
           }
         })
         .then(response => {
-          dispatch(setUserRooms(response.data.rooms));
+          dispatch(setCurrentHistory(response.data.history));
         })
         .catch(error => {
           console.log(`error: ${JSON.stringify(error)}`);
         });
-      // tableau de message, history complet de la room
     });
 
     socket.on('typing', room => {

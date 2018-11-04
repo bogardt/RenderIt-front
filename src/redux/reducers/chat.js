@@ -2,11 +2,18 @@ const initialState = {
   isSocketConnectPending: false,
   isSocketConnected: false,
   selectedRoom: 0,
-  rooms: []
+  rooms: [],
+  history: []
 };
 
 const ChatReducer = (state = initialState, action) => {
   switch (action.type) {
+    case 'SET_USER_HISTORY':
+      return {
+        ...state,
+        history: action.history
+      };
+
     case 'SET_SELECTED_ROOM':
       return {
         ...state,
