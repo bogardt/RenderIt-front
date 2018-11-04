@@ -15,6 +15,7 @@ import {
 } from '../../redux/actions/global';
 import { ChangeSelectedRoom, SendMessage } from '../../redux/actions/rooms';
 import './Messages.css';
+import { StopTypingAction, TypingAction } from '../../redux/actions/chat';
 
 const cookies = new Cookies();
 
@@ -38,6 +39,12 @@ class Messages extends Component {
 
   handleChangeInput = e => {
     this.input = e.target.value;
+    const { selectedRoom } = this.props;
+    if (this.input === null) {
+      StopTypingAction(selectedRoom);
+    } else {
+      TypingAction(selectedRoom);
+    }
   };
 
   handleSendInput = e => {
@@ -165,7 +172,9 @@ const mapDispatchToProps = dispatch => ({
   changeSelectedRoom: selectedRoom => dispatch(ChangeSelectedRoom(selectedRoom)),
   searchFriends: (jwt, searchFriends) => dispatch(SearchFriendsAction(jwt, searchFriends)),
   removeFriend: (jwt, friend) => dispatch(RemoveFriendAction(jwt, friend)),
-  addRoom: (jwt, name) => dispatch(AddRoomAction(jwt, name))
+  addRoom: (jwt, name) => dispatch(AddRoomAction(jwt, name)),
+  TypingAction: selectedRoom => dispatch(TypingAction(selectedRoom)),
+  StopTypingAction: selectedRoom => dispatch(StopTypingAction(selectedRoom))
 });
 
 export default connect(
