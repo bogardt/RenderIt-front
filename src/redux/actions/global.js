@@ -62,7 +62,6 @@ export const AddFriendAction = (jwt, friendId) => () => {
       }
     })
     .catch(error => {
-      console.log(error);
       toaster.error(error.response.message);
     });
 };
@@ -109,7 +108,6 @@ export const SearchFriendsAction = (jwt, search) => dispatch => {
       }
     })
     .then(response => {
-      console.log(response);
       dispatch(setFriendsSearch(response.data.friends));
     })
     .catch(error => {

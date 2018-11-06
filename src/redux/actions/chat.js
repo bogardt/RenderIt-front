@@ -142,7 +142,7 @@ export const GetRoom = (jwt, roomId) => dispatch => {
     .catch(error => {
       console.log(`error: ${JSON.stringify(error)}`);
     });
-}
+};
 
 export const TypingAction = roomId => dispatch => {
   SocketSingleton.socket.emit('typing', roomId);
@@ -155,8 +155,6 @@ export const StopTypingAction = roomId => dispatch => {
 };
 
 export const SendMessageAction = (message, roomId) => dispatch => {
-  console.log(message);
-  console.log(roomId);
   SocketSingleton.socket.emit('message', message, roomId);
   dispatch(setMessageEventSent());
 };
@@ -167,14 +165,11 @@ export const JoinRoomAction = roomId => dispatch => {
 };
 
 export const AddFriendInRoomAction = (userId, roomId) => dispatch => {
-  console.log(`userId: ${userId}`);
-  console.log(`roomId: ${roomId}`);
   SocketSingleton.socket.emit('add-friend', userId, roomId);
   dispatch(setAddFriendToRoomEventSent());
 };
 
 export const CreateRoomAction = roomName => dispatch => {
-  console.log(`roomName: ${roomName}`);
   SocketSingleton.socket.emit('create-room', roomName);
   dispatch(setCreateRoomEventSent());
 };
@@ -196,19 +191,16 @@ export const ServerConnectAction = (email, bearer) => dispatch => {
       dispatch(setAuthorizationEventSent());
     });
 
-    socket.on('success', message => {
+    socket.on('success', () => {
       dispatch(setSuccessEventReceived());
-      // toaster.success(message);
     });
 
-    socket.on('fail', message => {
+    socket.on('fail', () => {
       dispatch(setErrorEventReceived());
-      // toaster.error(message);
     });
 
-    socket.on('join-room', room => {
+    socket.on('join-room', () => {
       dispatch(setJoinRoomEventReceived());
-      // objet room avec id history user etc..
     });
 
     socket.on('add-friend', message => {
@@ -260,14 +252,12 @@ export const ServerConnectAction = (email, bearer) => dispatch => {
         });
     });
 
-    socket.on('typing', room => {
+    socket.on('typing', () => {
       dispatch(setTypingEventReceived());
-      // objet room avec id history user etc..
     });
 
-    socket.on('stop-typing', room => {
+    socket.on('stop-typing', () => {
       dispatch(setStopTypingEventReceived());
-      // objet room avec id history user etc..
     });
   } else dispatch(setIsSocketConnected(false));
 };

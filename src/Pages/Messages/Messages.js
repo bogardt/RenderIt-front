@@ -34,7 +34,6 @@ class Messages extends Component {
     const { getInfo, getRooms, jwt } = this.props;
     getInfo(jwt);
     getRooms(jwt);
-    console.log(`cookies jwt: ${jwt}`);
     this.jwt = jwt;
   }
 
@@ -91,7 +90,6 @@ class Messages extends Component {
 
   render() {
     const { rooms, userChecked, allowed, friends, email, history } = this.props;
-    console.log(friends);
     if (userChecked && !allowed) {
       return <Redirect to="/login" />;
     }

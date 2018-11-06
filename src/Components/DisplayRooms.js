@@ -18,7 +18,11 @@ class DisplayRooms extends Component {
           <div
             className={`chat_list ${selectedRoom === index ? 'active_chat' : ''}`}
             onClick={e => this.handleChangeSelectedRoom(index, e)}
-            key={index}
+            onKeyUp={e => this.handleChangeSelectedRoom(index, e)}
+            onKeyDown={e => this.handleChangeSelectedRoom(index, e)}
+            key={room.id}
+            tabIndex={index}
+            role="button"
           >
             <div className="chat_people">
               <div className="chat_img">
