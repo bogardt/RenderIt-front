@@ -9,6 +9,11 @@ const setUserInfos = (email, username, jwt, allowed) => ({
   allowed
 });
 
+const setJwt = jwt => ({
+  type: 'SET_JWT',
+  jwt
+});
+
 const setUserSearch = users => ({
   type: 'SET_USER_SEARCH',
   users
@@ -32,6 +37,10 @@ export const GetMeAction = jwt => dispatch => {
     .catch(error => {
       dispatch(setUserInfos(error.response.data.email, error.response.data.username, jwt, false));
     });
+};
+
+export const SetJwtAction = jwt => dispatch => {
+  dispatch(setJwt(jwt));
 };
 
 export const AddFriendAction = (jwt, friendId) => () => {
@@ -112,7 +121,7 @@ export const ResetFriendsAction = () => dispatch => {
   dispatch(setFriendsSearch([]));
 };
 
-export const AddRoomAction = (jwt, name) => dispatch => {
+export const AddRoomAction = (jwt, name) => () => {
   axios
     .post(
       '/api/room',

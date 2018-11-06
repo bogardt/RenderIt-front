@@ -2,13 +2,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
-import Cookies from 'universal-cookie';
 import { GetMeAction, AddFriendAction, SearchUsersAction } from '../../redux/actions/global';
 import UserList from '../../Components/UserList';
-
 import './Home.css';
-
-const cookies = new Cookies();
+import { ResetLoginState } from '../../redux/actions/login';
 
 class Home extends Component {
   search = '';
@@ -17,9 +14,9 @@ class Home extends Component {
 
   constructor(props) {
     super(props);
-    const { getInfo } = this.props;
-    const jwt = cookies.get('jwt');
+    const { getInfo, resetLogin, jwt } = this.props;
     getInfo(jwt);
+    resetLogin();
     this.jwt = jwt;
   }
 
@@ -71,6 +68,8 @@ Home.propTypes = {
   getInfo: PropTypes.func.isRequired,
   addFriend: PropTypes.func.isRequired,
   searchUsers: PropTypes.func.isRequired,
+  resetLogin: PropTypes.func.isRequired,
+  jwt: PropTypes.string.isRequired,
   allowed: PropTypes.bool.isRequired,
   userChecked: PropTypes.bool.isRequired,
   users: PropTypes.arrayOf(
@@ -82,7 +81,7 @@ Home.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  jwt: state.LoginReducer.payload.message,
+  jwt: state.GlobalReducer.jwt,
   email: state.GlobalReducer.email,
   username: state.GlobalReducer.username,
   allowed: state.GlobalReducer.allowed,
@@ -93,7 +92,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   getInfo: jwt => dispatch(GetMeAction(jwt)),
   addFriend: (jwt, email) => dispatch(AddFriendAction(jwt, email)),
-  searchUsers: (jwt, search) => dispatch(SearchUsersAction(jwt, search))
+  searchUsers: (jwt, search) => dispatch(SearchUsersAction(jwt, search)),
+  resetLogin: () => dispatch(ResetLoginState())
 });
 
 export default connect(

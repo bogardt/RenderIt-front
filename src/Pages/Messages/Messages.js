@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import Cookies from 'universal-cookie';
 import { Redirect } from 'react-router-dom';
 import DisplayRooms from '../../Components/DisplayRooms';
 import DisplayMessages from '../../Components/DisplayMessages';
@@ -23,8 +22,6 @@ import {
 } from '../../redux/actions/chat';
 import './Messages.css';
 
-const cookies = new Cookies();
-
 class Messages extends Component {
   input = '';
 
@@ -34,8 +31,7 @@ class Messages extends Component {
 
   constructor(props) {
     super(props);
-    const { getInfo, getRooms } = this.props;
-    const jwt = cookies.get('jwt');
+    const { getInfo, getRooms, jwt } = this.props;
     getInfo(jwt);
     getRooms(jwt);
     console.log(`cookies jwt: ${jwt}`);
@@ -88,6 +84,7 @@ class Messages extends Component {
   };
 
   handleAddFriendToConv = (friend, e) => {
+    e.preventDefault();
     const { addFriendInRoom, rooms, selectedRoom } = this.props;
     addFriendInRoom(friend.id, rooms[selectedRoom].id);
   };
@@ -132,7 +129,7 @@ class Messages extends Component {
                   type="text"
                   onChange={this.handleChangeSearchFriends}
                 />
-                <button className="btn btn-link search-btn">
+                <button className="btn btn-link search-btn" type="button">
                   <i
                     className="fa fa-close"
                     aria-hidden="true"
@@ -198,10 +195,12 @@ Messages.propTypes = {
   allowed: PropTypes.bool.isRequired,
   userChecked: PropTypes.bool.isRequired,
   friends: PropTypes.arrayOf(PropTypes.string).isRequired,
-  email: PropTypes.string.isRequired
+  email: PropTypes.string.isRequired,
+  jwt: PropTypes.string.isRequired
 };
 
 const mapStateToProps = state => ({
+  jwt: state.GlobalReducer.jwt,
   rooms: state.ChatReducer.rooms,
   history: state.ChatReducer.history,
   selectedRoom: state.ChatReducer.selectedRoom,

@@ -2,11 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Redirect, Link } from 'react-router-dom';
-import Cookies from 'universal-cookie';
 import { LoginAction, ResetLoginState } from '../../redux/actions/login';
 import { ServerConnectAction } from '../../redux/actions/chat';
-
-const cookies = new Cookies();
+import { SetJwtAction } from '../../redux/actions/global';
 
 class Login extends Component {
   email = '';
@@ -34,10 +32,9 @@ class Login extends Component {
   };
 
   render() {
-    const { jwt, serverConnectAction } = this.props;
+    const { jwt, serverConnectAction, setJwt } = this.props;
     if (jwt && jwt.length > 0) {
-      cookies.set('jwt', jwt);
-      cookies.set('email', this.email);
+      setJwt(jwt);
       serverConnectAction(this.email, jwt);
       return <Redirect to="/home" />;
     }
@@ -104,6 +101,7 @@ class Login extends Component {
 Login.propTypes = {
   signIn: PropTypes.func.isRequired,
   resetLogin: PropTypes.func.isRequired,
+  setJwt: PropTypes.func.isRequired,
   jwt: PropTypes.string.isRequired,
   serverConnectAction: PropTypes.func.isRequired
 };
@@ -119,6 +117,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   signIn: (email, password) => dispatch(LoginAction(email, password)),
   resetLogin: () => dispatch(ResetLoginState()),
+  setJwt: jwt => dispatch(SetJwtAction(jwt)),
   serverConnectAction: (email, jwt) => dispatch(ServerConnectAction(email, jwt))
 });
 

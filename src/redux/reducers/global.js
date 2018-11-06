@@ -32,6 +32,12 @@ const GlobalReducer = (state = initialState, action) => {
         friends: action.friends
       };
 
+    case 'SET_JWT':
+      return {
+        ...state,
+        jwt: action.jwt
+      };
+
     default:
       return state;
   }

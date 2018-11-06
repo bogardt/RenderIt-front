@@ -22,6 +22,7 @@ export const SetLoggedState = isLogged => dispatch => {
 
 export const ResetLoginState = () => dispatch => {
   dispatch(setLoginPending(false));
+  dispatch(setIsLogged(false));
   dispatch(
     setLoginPayload({
       status: 0,
