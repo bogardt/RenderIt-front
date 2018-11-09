@@ -181,7 +181,7 @@ export const LeaveRoomAction = roomId => dispatch => {
 
 export const ServerConnectAction = (email, bearer) => dispatch => {
   dispatch(setSocketConnectPending(true));
-  const socket = io('http://localhost:4000');
+  const socket = io(`${window.location.protocol}//${window.location.hostname}:4000`);
   if (socket) {
     SocketSingleton.socket = socket;
     dispatch(setIsSocketConnected(true));
